@@ -22,6 +22,7 @@
 // Defines
 //-----------------------------------------------------------------
 #define GAME_ENGINE (GameEngine::GetSingleton())
+#define FILE_MANAGER (FileManager::GetSingleton())
 
 //-----------------------------------------------------------------
 // Terraria methods																				
@@ -48,7 +49,6 @@ void Terraria::GameInitialize(GameSettings &gameSettingsRef)
 
 void Terraria::GameStart()
 {
-	srand(28845);
 	GAME_ENGINE->SetBitmapInterpolationModeNearestNeighbor();
 	m_AvatarPtr = new Avatar();
 	m_CameraPtr = new Camera();
@@ -92,6 +92,14 @@ void Terraria::GameTick(double deltaTime)
 
 void Terraria::GamePaint()
 {
+
+	GAME_ENGINE->SetViewMatrix(MATRIX3X2::CreateIdentityMatrix());
+
+	Bitmap * bitmapPtr = FILE_MANAGER->GetBackgroundBitmap(0);
+	for (int i = 0; i <= 40; i++) {
+		GAME_ENGINE->DrawBitmap(bitmapPtr, i*bitmapPtr->GetWidth(), 0);
+	}
+	m_WorldPtr->PaintBackground(m_AvatarPtr);
 
 	m_CameraPtr->SetViewMatrix(m_AvatarPtr);
 

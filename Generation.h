@@ -18,7 +18,7 @@ public:
 	Generation( const Generation& ) = delete;
 	Generation& operator=( const Generation& ) = delete;
 
-	static void GenerateChunk(World* worldPtr);
+	static void GenerateChunks(World* worldPtr);
 private: 
 
 	static int checkSides(int x, int y, Chunk* chunkPtr);

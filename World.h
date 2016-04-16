@@ -18,6 +18,7 @@ public:
 
 	void Tick(double deltaTime,Avatar* avatarPtr);
 	void Paint(int x,int y);
+	void PaintBackground(Avatar* avatarPtr);
 
 	static const size_t WIDTH = 20;
 	static const size_t HEIGHT = 20;

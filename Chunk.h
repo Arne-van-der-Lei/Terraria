@@ -28,8 +28,12 @@ public:
 	};
 
 	enum BackgroundType {
-		BAir = 0,
-		BDirt = 1
+		BAIR = 0,
+		BDIRT = 1
+	};
+
+	enum BiomeType {
+		mountains = 0
 	};
 
 	enum Side {
@@ -39,7 +43,7 @@ public:
 		BOTTOM = 8
 	};
 
-	Chunk(int x, int y, World * world);
+	Chunk(int x, int y, World * worldPtr);
 	virtual ~Chunk( );
 	// Make objects non-copyable
 	// https://msdn.microsoft.com/en-us/library/dn457344.aspx 
@@ -61,6 +65,7 @@ public:
 	void DigTileAt(int x, int y);
 	int GetX();
 	int GetY();
+	int GetBiome();
 
 private: 
 
@@ -69,11 +74,11 @@ private:
 	World * m_WorldPtr = nullptr; 
 	int m_X = 0;
 	int m_Y = 0;
-
+	int m_biome = 0;
 	PhysicsActor* m_ActPtr = nullptr;
 
 	bool CheckTileToAir(Tile* currentTilePtr, Tile* tilePtr);
-	//bool CheckTileToDirt(Tile* currentTilePtr, Tile* tilePtr);
+	bool CheckTileToBackgroundAir(Tile* currentTilePtr, Tile* tilePtr);
 
 	int BoolToInt(bool left, bool right, bool top, bool bottom);
 	void CheckSurroundings(Tile* currentTilePtr);

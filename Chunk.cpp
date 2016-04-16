@@ -12,13 +12,14 @@
 #define GAME_ENGINE (GameEngine::GetSingleton())
 #define FILE_MANAGER (FileManager::GetSingleton())
 
-Chunk::Chunk(int x, int y, World * world) : m_X(x), m_Y(y), m_WorldPtr(world)
+Chunk::Chunk(int x, int y, World * worldPtr) : m_X(x), m_Y(y), m_WorldPtr(worldPtr)
 {
 	for (int i = 0; i < SIZE; i++) {
 		for (int j = 0; j < SIZE; j++) {
 			Tile* tilePtr = new Tile();
 			tilePtr->x = i;
 			tilePtr->y = j;
+			tilePtr->backTileType = BackgroundType::BDIRT;
 			tilePtr->type = Type::AIR;
 			m_TileArrPtr.push_back(tilePtr);
 		}
@@ -129,21 +130,21 @@ void Chunk::PaintTileAt(Tile* tilePtr) {
 }
 
 void Chunk::PaintBackgroundAt(Tile* tilePtr) {
-	if (tilePtr->air == 15) return;
+	if (tilePtr->backTileType == BackgroundType::BAIR)return;
 	Bitmap* bitmapWallPtr = FILE_MANAGER->GetWallBitmap(tilePtr->backTileType);
 
 	MATRIX3X2 matTrans, matScale, matWorldWall, matOffset;
 
 	matTrans.SetAsTranslate(tilePtr->x * TILESIZE + m_X*SIZE*TILESIZE, tilePtr->y * TILESIZE + m_Y*SIZE*TILESIZE);
-	matOffset.SetAsTranslate(-TILESIZE / 4, -TILESIZE / 4);
+	matOffset.SetAsTranslate(-TILESIZE / 2, -TILESIZE / 2);
 	matScale.SetAsScale(TILESIZE / 16);
 
 	matWorldWall = matScale *matTrans*matOffset;
 
 	RECT2 rectWall;
-	rectWall.left = tilePtr->air * TILESIZE;
+	rectWall.left = tilePtr->noBackround * TILESIZE;
 	rectWall.top = TILESIZE;
-	rectWall.right = tilePtr->air * TILESIZE + TILESIZE;
+	rectWall.right = tilePtr->noBackround * TILESIZE + TILESIZE;
 	rectWall.bottom = TILESIZE + TILESIZE;
 
 	GAME_ENGINE->SetWorldMatrix(matWorldWall);
@@ -160,17 +161,14 @@ bool Chunk::CheckTileToAir(Tile* currentTilePtr, Tile* tilePtr) {
 	return false;
 }
 
-/*bool Chunk::CheckTileToDirt(Tile* currentTilePtr,Tile* tilePtr) {
+bool Chunk::CheckTileToBackgroundAir(Tile* currentTilePtr,Tile* tilePtr) {
 	if (tilePtr != nullptr) {
-		if (currentTilePtr->type != Type::DIRT) {
-			if (tilePtr->type == Type::DIRT) {
-				return true;
-			}
+		if (tilePtr->backTileType != BackgroundType::BAIR) {
+			return true;
 		}
-		return false;
 	}
 	return false;
-}*/
+}
 
 int Chunk::BoolToInt(bool left, bool right, bool top, bool bottom) {
 	int c = 0;
@@ -196,13 +194,13 @@ void Chunk::CheckSurroundings(Tile* currentTilePtr) {
 
 	currentTilePtr->air = BoolToInt(left, right, top, bottom);
 
-	/*left = CheckTileToDirt(currentTilePtr, GetTileAt(currentTilePtr->x - 1, currentTilePtr->y));
-	right = CheckTileToDirt(currentTilePtr, GetTileAt(currentTilePtr->x + 1, currentTilePtr->y));
-	top = CheckTileToDirt(currentTilePtr, GetTileAt(currentTilePtr->x, currentTilePtr->y - 1));
-	bottom = CheckTileToDirt(currentTilePtr, GetTileAt(currentTilePtr->x, currentTilePtr->y + 1));
+	left = CheckTileToBackgroundAir(currentTilePtr, GetTileAt(currentTilePtr->x - 1, currentTilePtr->y));
+	right = CheckTileToBackgroundAir(currentTilePtr, GetTileAt(currentTilePtr->x + 1, currentTilePtr->y));
+	top = CheckTileToBackgroundAir(currentTilePtr, GetTileAt(currentTilePtr->x, currentTilePtr->y - 1));
+	bottom = CheckTileToBackgroundAir(currentTilePtr, GetTileAt(currentTilePtr->x, currentTilePtr->y + 1));
 
-	currentTilePtr->dirt = BoolToInt(left, right, top, bottom);
-	*/
+	currentTilePtr->noBackround = BoolToInt(left, right, top, bottom);
+	
 }
 
 DOUBLE2 Chunk::GetGlobalLocation() {
@@ -223,4 +221,8 @@ int Chunk::GetY() {
 
 void Chunk::SetTileAt(int x, int y, Tile* tile) {
 	m_TileArrPtr[x*SIZE + y] = tile;
+}
+
+int Chunk::GetBiome() {
+	return m_biome;
 }

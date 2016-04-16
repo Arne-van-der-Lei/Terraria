@@ -8,7 +8,10 @@
 #include "Chunk.h"
 #include "Generation.h"
 #include "Avatar.h"
-//#define GAME_ENGINE (GameEngine::GetSingleton())
+#include "Filemanager.h"
+
+#define GAME_ENGINE (GameEngine::GetSingleton())
+#define FILE_MANAGER (FileManager::GetSingleton())
 
 World::World()
 {
@@ -18,7 +21,7 @@ World::World()
 		}
 	}
 
-	Generation::GenerateChunk(this);
+	Generation::GenerateChunks(this);
 	
 	for (Chunk* chunkPtr : m_ChunkArrPtr) {
 		chunkPtr->AfterInit();
@@ -52,6 +55,31 @@ void World::Tick(double deltaTime,Avatar* avatarPtr)
 			}
 		}
 	}
+}
+void World::PaintBackground(Avatar* avatarPtr) {
+	Chunk * chunkPtr = GetChunkAt(avatarPtr->GetChunkPos());
+	int biome = chunkPtr->GetBiome();
+	Bitmap* bmpBG1Ptr = FILE_MANAGER->GetBackgroundBitmap(biome * 3+1);
+	Bitmap* bmpBG2Ptr = FILE_MANAGER->GetBackgroundBitmap(biome * 3+2);
+	//Bitmap* bmpBG3Ptr = FILE_MANAGER->GetBackgroundBitmap(biome * 3+3);
+
+	MATRIX3X2 matWorld, matWorld1, matWorld2, matTrans, matScale, matScale2, matScale3, matOffset, matOffset2;
+
+	matTrans.SetAsTranslate(-avatarPtr->GetPosition()/(WIDTH*2));
+	matOffset.SetAsTranslate(WIDTH*2, WIDTH * 2);
+	matScale.SetAsScale(2);
+	matScale.SetAsScale(1.7);
+	matScale.SetAsScale(1.5);
+	matWorld = matScale *matTrans;
+	matWorld1 = matScale2 *matTrans*matOffset;
+	matWorld2 = matScale3 *matTrans*matOffset*matOffset;
+
+	GAME_ENGINE->SetWorldMatrix(matWorld);
+	GAME_ENGINE->DrawBitmap(bmpBG1Ptr);
+	GAME_ENGINE->SetWorldMatrix(matWorld2);
+	GAME_ENGINE->DrawBitmap(bmpBG2Ptr);
+	//GAME_ENGINE->SetWorldMatrix(matWorld);
+	//GAME_ENGINE->DrawBitmap(bmpBG1Ptr);
 }
 
 void World::Paint(int x, int y)

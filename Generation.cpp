@@ -50,7 +50,8 @@ int Generation::checkSides(int x,int y, Chunk* chunkPtr) {
 	return sides;
 }
 
-void Generation::GenerateChunk(World* worldPtr) {
+void Generation::GenerateChunks(World* worldPtr) {
+	srand(seed);
 	for (size_t i = 0; i < Chunk::SIZE*World::WIDTH; i++) {
 		for (size_t j = 0; j < Chunk::SIZE*World::HEIGHT; j++) {
 			Chunk* chunkPtr = worldPtr->GetChunkAt((i / Chunk::SIZE), (j / Chunk::SIZE));
@@ -76,8 +77,10 @@ void Generation::GenerateChunk(World* worldPtr) {
 			Chunk* chunkPtr = worldPtr->GetChunkAt((i / Chunk::SIZE), (j / Chunk::SIZE));
 			int x = i - (i / Chunk::SIZE)*Chunk::SIZE;
 			int y = j - (j / Chunk::SIZE)*Chunk::SIZE;
-			if (chunkPtr->GetTileAt(x, y)->type == Chunk::Type::DIRT) {
-				chunkPtr->GetTileAt(x, y)->type = Chunk::Type::GRASS;
+			Tile* tilePtr = chunkPtr->GetTileAt(x, y);
+			tilePtr->backTileType = Chunk::BackgroundType::BAIR;
+			if (tilePtr->type == Chunk::Type::DIRT) {
+				tilePtr->type = Chunk::Type::GRASS;
 				j = 100000;
 			}
 		}
