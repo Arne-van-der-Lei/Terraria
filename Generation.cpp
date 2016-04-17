@@ -57,7 +57,7 @@ void Generation::GenerateChunks(World* worldPtr) {
 			Chunk* chunkPtr = worldPtr->GetChunkAt((i / Chunk::SIZE), (j / Chunk::SIZE));
 			int x = i - (i / Chunk::SIZE)*Chunk::SIZE;
 			int y = j - (j / Chunk::SIZE)*Chunk::SIZE;
-			if(j < Chunk::SIZE * 3 && (rand() % 100)<20){
+			if(j < Chunk::SIZE * 5 && (rand() % 100)<20){
 				GenerateTileAt(x, y, chunkPtr);
 			}else if ((rand()% 100)<48) {
 				chunkPtr->GetTileAt(x, y)->type = Chunk::Type::AIR;
@@ -96,5 +96,4 @@ void Generation::GenerateTileAt(int i, int j, Chunk* chunkPtr) {
 	} else {
 		tilePtr->type = Chunk::Type::DIRT;
 	}
-
 }

@@ -5,8 +5,9 @@
 // Group: 1DAE16
 //-----------------------------------------------------------------
 #include "World.h"
+#include "LandNPC.h"
 
-class Avatar 
+class Avatar : public LandNPC
 {
 public:
 	Avatar( );
@@ -16,20 +17,7 @@ public:
 	Avatar( const Avatar& ) = delete;
 	Avatar& operator=( const Avatar& ) = delete;
 
-	void Tick(double deltaTime);
-	void Paint();
-	void DoCollision(World* world,double deltaTime);
-	DOUBLE2 GetPosition();
-	DOUBLE2 GetBlockPos();
-	DOUBLE2 GetChunkPos();
+	virtual void Tick(double deltaTime);
+	virtual void Paint();
 private: 
-
-	bool CheckForUpHill(int i , int j , Chunk* chunkPtr);
-	DOUBLE2 m_pos;
-	DOUBLE2 m_size;
-	DOUBLE2 m_motion;
-
-	DOUBLE2 m_blockPos;
-
-	bool m_isOnGround;
 };

@@ -133,6 +133,15 @@
     <ClCompile Include="Generation.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LandNPC.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -403,6 +412,15 @@
       <Filter>Game Files</Filter>
     </ClInclude>
     <ClInclude Include="Generation.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LandNPC.h">
       <Filter>Game Files</Filter>
     </ClInclude>
   </ItemGroup>

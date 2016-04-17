@@ -25,6 +25,7 @@
 class Avatar;
 class Camera;
 class World;
+class NPC;
 
 //-----------------------------------------------------------------
 // Terraria Class																
@@ -72,6 +73,8 @@ private:
 	Camera* m_CameraPtr = nullptr;
 	bool m_PHDR = false;
 	World* m_WorldPtr = nullptr;
+
+	std::vector<NPC* > m_NPCArrPtr; 
 
 	PhysicsActor* m_GroundPtr = nullptr;
 	double m_deltatime = 0;

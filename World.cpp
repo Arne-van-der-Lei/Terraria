@@ -9,12 +9,16 @@
 #include "Generation.h"
 #include "Avatar.h"
 #include "Filemanager.h"
+#include "Background.h"
 
 #define GAME_ENGINE (GameEngine::GetSingleton())
 #define FILE_MANAGER (FileManager::GetSingleton())
 
 World::World()
 {
+
+	m_Bg = new Background(Background::Types::LOWMOUNTENS, 0);
+	m_FrontBg = new Background(Background::Types::HIGHMOUNTENS, 300);
 	for (size_t i = 0; i < WIDTH; i++) {
 		for (size_t j = 0; j < HEIGHT; j++) {
 			m_ChunkArrPtr.push_back(new Chunk(i,j,this));
@@ -34,6 +38,9 @@ World::~World()
 		delete chunkPtr;
 		chunkPtr = nullptr;
 	}
+
+	delete m_Bg;
+	delete m_FrontBg;
 }
 
 void World::Tick(double deltaTime,Avatar* avatarPtr)
@@ -45,6 +52,10 @@ void World::Tick(double deltaTime,Avatar* avatarPtr)
 	if (GetChunkAt(avatarPtr->GetChunkPos().x + 3, avatarPtr->GetChunkPos().y) == nullptr) {
 		generateNewChunkAt(avatarPtr->GetChunkPos().x + 3, avatarPtr->GetChunkPos().y);
 	}*/
+
+	m_Bg->Tick(deltaTime);
+	m_FrontBg->Tick(deltaTime);
+
 	int x = avatarPtr->GetChunkPos().x;
 	int y = avatarPtr->GetChunkPos().y;
 
@@ -57,29 +68,8 @@ void World::Tick(double deltaTime,Avatar* avatarPtr)
 	}
 }
 void World::PaintBackground(Avatar* avatarPtr) {
-	Chunk * chunkPtr = GetChunkAt(avatarPtr->GetChunkPos());
-	int biome = chunkPtr->GetBiome();
-	Bitmap* bmpBG1Ptr = FILE_MANAGER->GetBackgroundBitmap(biome * 3+1);
-	Bitmap* bmpBG2Ptr = FILE_MANAGER->GetBackgroundBitmap(biome * 3+2);
-	//Bitmap* bmpBG3Ptr = FILE_MANAGER->GetBackgroundBitmap(biome * 3+3);
-
-	MATRIX3X2 matWorld, matWorld1, matWorld2, matTrans, matScale, matScale2, matScale3, matOffset, matOffset2;
-
-	matTrans.SetAsTranslate(-avatarPtr->GetPosition()/(WIDTH*2));
-	matOffset.SetAsTranslate(WIDTH*2, WIDTH * 2);
-	matScale.SetAsScale(2);
-	matScale.SetAsScale(1.7);
-	matScale.SetAsScale(1.5);
-	matWorld = matScale *matTrans;
-	matWorld1 = matScale2 *matTrans*matOffset;
-	matWorld2 = matScale3 *matTrans*matOffset*matOffset;
-
-	GAME_ENGINE->SetWorldMatrix(matWorld);
-	GAME_ENGINE->DrawBitmap(bmpBG1Ptr);
-	GAME_ENGINE->SetWorldMatrix(matWorld2);
-	GAME_ENGINE->DrawBitmap(bmpBG2Ptr);
-	//GAME_ENGINE->SetWorldMatrix(matWorld);
-	//GAME_ENGINE->DrawBitmap(bmpBG1Ptr);
+	m_Bg->Paint(avatarPtr);
+	m_FrontBg->Paint(avatarPtr);
 }
 
 void World::Paint(int x, int y)

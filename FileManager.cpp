@@ -16,8 +16,15 @@ void FileManager::GetAllTextures() {
 	m_BmpArrPtr.push_back(new Bitmap(String("./Resources/Tile_02.png")));
 	m_BmpWallArrPtr.push_back(new Bitmap(String("./Resources/Wall_01.png")));
 	m_BmpBackgroundArrPtr.push_back(new Bitmap(String("./Resources/Background_0.png")));
-	m_BmpBackgroundArrPtr.push_back(new Bitmap(String("./Resources/Background_7.png")));
-	m_BmpBackgroundArrPtr.push_back(new Bitmap(String("./Resources/Background_8.png")));
+	m_BmpBackgroundArrPtr.push_back(new Bitmap(String("./Resources/Background_114.png")));
+	m_BmpBackgroundArrPtr.push_back(new Bitmap(String("./Resources/Background_115.png")));
+	m_BmpBackgroundArrPtr.push_back(new Bitmap(String("./Resources/Background_116.png")));
+	m_BmpBackgroundArrPtr.push_back(new Bitmap(String("./Resources/Background_168.png")));
+	m_BmpBackgroundArrPtr.push_back(new Bitmap(String("./Resources/Background_169.png")));
+	m_BmpBackgroundArrPtr.push_back(new Bitmap(String("./Resources/Background_170.png")));
+	for (int i = 0; i < 14; i++) {
+		m_BmpAvatarArrPtr.push_back(new Bitmap(String("./Resources/Player_0_") + String(i) + String(".png")));
+	}
 }
 
 FileManager::~FileManager() {
@@ -25,17 +32,25 @@ FileManager::~FileManager() {
 		delete bitmapPtr;
 		bitmapPtr = nullptr;
 	}
+
 	for (Bitmap * bitmapPtr : m_BmpWallArrPtr) {
 		delete bitmapPtr;
 		bitmapPtr = nullptr;
 	}
+
 	for (Bitmap * bitmapPtr : m_BmpBackgroundArrPtr) {
+		delete bitmapPtr;
+		bitmapPtr = nullptr;
+	}
+
+	for (Bitmap * bitmapPtr : m_BmpAvatarArrPtr) {
 		delete bitmapPtr;
 		bitmapPtr = nullptr;
 	}
 	m_BmpArrPtr.clear();
 	m_BmpWallArrPtr.clear();
 	m_BmpBackgroundArrPtr.clear();
+	m_BmpAvatarArrPtr.clear();
 }
 
 FileManager::FileManager() {	
@@ -52,6 +67,10 @@ Bitmap* FileManager::GetWallBitmap(int number) {
 
 Bitmap* FileManager::GetBackgroundBitmap(int number) {
 	return m_BmpBackgroundArrPtr[number];
+}
+
+Bitmap* FileManager::GetAvatarBitmap(int number) {
+	return m_BmpAvatarArrPtr[number];
 }
 
 FileManager* FileManager::GetSingleton() {

@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------
 class Chunk;
 class Avatar;
+class Background;
 class World 
 {
 public:
@@ -28,8 +29,8 @@ public:
 
 	std::vector<Chunk* > GetChunks();
 
-
 private: 
-
+	Background* m_Bg;
+	Background* m_FrontBg;
 	std::vector<Chunk* > m_ChunkArrPtr;
 };

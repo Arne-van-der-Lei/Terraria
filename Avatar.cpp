@@ -6,16 +6,13 @@
 #include "stdafx.h"		
 #include "Avatar.h"
 #include "Chunk.h"
+#include "Filemanager.h"
+
 #define GAME_ENGINE (GameEngine::GetSingleton())
+#define FILE_MANAGER (FileManager::GetSingleton())
 
-Avatar::Avatar()
+Avatar::Avatar() : LandNPC({ 16 * 32 * 10,16 * 32 * 2 }, {40,90})
 {
-	m_pos.x = 16 * 32 *10;
-	m_pos.y = 16*32*2;
-
-	m_size.x = 40;
-	m_size.y = 90;
-	m_isOnGround = false;
 
 }
 
@@ -27,11 +24,11 @@ void Avatar::Tick(double deltaTime)
 {	
 	m_motion.x = 0;
 
-	if (GAME_ENGINE->IsKeyboardKeyDown(VK_LEFT)) {
+	if (GAME_ENGINE->IsKeyboardKeyDown('Q')) {
 		m_motion.x = -120*deltaTime;
 	}
 
-	if (GAME_ENGINE->IsKeyboardKeyDown(VK_RIGHT)) {
+	if (GAME_ENGINE->IsKeyboardKeyDown('D')) {
 		m_motion.x = 120* deltaTime;
 	}
 
@@ -43,100 +40,23 @@ void Avatar::Tick(double deltaTime)
 	m_pos.y += m_motion.y;
 }
 
-void Avatar::DoCollision(World* world,double deltaTime) {
-
-	int toprightX = (int)(m_pos.x - m_size.x / 2.0);
-	int toprightY = (int)(m_pos.y - m_size.y / 2.0);
-
-	Chunk* chunkPtr = world->GetChunkAt(toprightX / (Chunk::TILESIZE*Chunk::SIZE), toprightY / (Chunk::TILESIZE*Chunk::SIZE));
-
-	if (chunkPtr == nullptr) {
-		m_motion.y += 1 * deltaTime;
-		return;
-	}
-
-	int blockposX = toprightX / (Chunk::TILESIZE) - chunkPtr->GetX()*Chunk::SIZE;
-	int blockposY = toprightY / (Chunk::TILESIZE) - chunkPtr->GetY()*Chunk::SIZE;
-
-	for (int i = blockposX; i < blockposX + (int)ceil(m_size.x/Chunk::TILESIZE)+1; i++) {
-		for (int j = blockposY; j < blockposY + (int)ceil(m_size.y / Chunk::TILESIZE) + 1; j++) {
-
-			Tile* tilePtr = chunkPtr->GetTileAt(i, j);
-			double topRightLocX = toprightX - chunkPtr->GetX()* Chunk::TILESIZE* Chunk::SIZE;
-			double topRightLocY = toprightY - chunkPtr->GetY()* Chunk::TILESIZE* Chunk::SIZE;
-
-			if (tilePtr != nullptr) {
-				if (tilePtr->type != Chunk::Type::AIR) {
-
-					//check 
-					if (j *Chunk::TILESIZE < topRightLocY + m_size.y && (j + 0.5) *Chunk::TILESIZE > topRightLocY + m_size.y
-						&& topRightLocX + m_size.x >(i) *Chunk::TILESIZE && topRightLocX < (i + 1) * Chunk::TILESIZE
-						&& chunkPtr->GetTileAt(i, j - 1)->type == Chunk::Type::AIR) {
-
-						m_pos.y = j * Chunk::TILESIZE + chunkPtr->GetY()* Chunk::TILESIZE* Chunk::SIZE - m_size.y / 2;
-						m_motion.y = 0;
-
-					} else if ((i + 1) * Chunk::TILESIZE > topRightLocX && (i + 0.5) * Chunk::TILESIZE < topRightLocX
-						&& (j + 1) * Chunk::TILESIZE > topRightLocY && j * Chunk::TILESIZE < topRightLocY + m_size.y
-						&& chunkPtr->GetTileAt(i + 1, j)->type == Chunk::Type::AIR) {
-
-						if (CheckForUpHill(i, j, chunkPtr) == false) {
-							m_pos.x = ((i + 1) + chunkPtr->GetX()*Chunk::SIZE)*Chunk::TILESIZE + m_size.x / 2.0;
-						} else if (j == blockposY + (int)floor(m_size.y / Chunk::TILESIZE)) {
-							m_pos.y = j * Chunk::TILESIZE + chunkPtr->GetY()* Chunk::TILESIZE* Chunk::SIZE - m_size.y / 2;
-						}
-
-					} else if (i * Chunk::TILESIZE < topRightLocX + m_size.x && (i + 0.5) * Chunk::TILESIZE > topRightLocX + m_size.x
-						&& (j + 1) * Chunk::TILESIZE > topRightLocY && j * Chunk::TILESIZE < topRightLocY + m_size.y
-						&& chunkPtr->GetTileAt(i - 1, j)->type == Chunk::Type::AIR) {
-
-						if (CheckForUpHill(i, j, chunkPtr) == false) {
-							m_pos.x = (i + chunkPtr->GetX()*Chunk::SIZE)*Chunk::TILESIZE - m_size.x / 2.0;
-						} else if (j == blockposY + (int)floor(m_size.y / Chunk::TILESIZE)) {
-							m_pos.y = j * Chunk::TILESIZE + chunkPtr->GetY()* Chunk::TILESIZE* Chunk::SIZE - m_size.y / 2;
-						}
-
-					} else if ((j + 1) *Chunk::TILESIZE > topRightLocY && (j + 0.5) *Chunk::TILESIZE < topRightLocY
-						&& topRightLocX + m_size.x >(i) *Chunk::TILESIZE && topRightLocX < (i + 1) *Chunk::TILESIZE
-						&& chunkPtr->GetTileAt(i, j + 1)->type == Chunk::Type::AIR) {
-
-						m_pos.y = (j + 1) * Chunk::TILESIZE + chunkPtr->GetY()* Chunk::TILESIZE* Chunk::SIZE + m_size.y / 2;
-						m_motion.y = 0;
-					}
-				
-				} else {
-					m_motion.y += 1 * deltaTime;
-				}
-			}
-		}
-	}
-}
-
-bool Avatar::CheckForUpHill(int i,int j,Chunk* chunkPtr) {
-	bool check = true;
-	for (int k = 1; k < (int)ceil(m_size.y / Chunk::TILESIZE)+1; k++) {
-		if (chunkPtr->GetTileAt(i, j - k)->type != Chunk::Type::AIR) {
-			check = false;
-		}
-	}
-	return check;
-}
-
 void Avatar::Paint()
 {
 	GAME_ENGINE->SetColor(COLOR(0, 0, 0));
 	GAME_ENGINE->FillRect(m_pos.x - m_size.x / 2.0, m_pos.y - m_size.y / 2.0, m_pos.x + m_size.x / 2.0, m_pos.y + m_size.y / 2.0);
 
-}
+	MATRIX3X2 matWorld, matTrans, matScale;
 
-DOUBLE2 Avatar::GetPosition() {
-	return m_pos;
-}
+	matTrans.SetAsTranslate(m_pos.x- m_size.x / 2.0, m_pos.y - m_size.y / 2.0);
+	matScale.SetAsScale(2);
 
-DOUBLE2 Avatar::GetBlockPos() {
-	return m_pos / Chunk::TILESIZE;
-}
+	matWorld = matScale*matTrans;
 
-DOUBLE2 Avatar::GetChunkPos() {
-	return m_pos / (Chunk::SIZE*Chunk::TILESIZE);
+	GAME_ENGINE->SetWorldMatrix(matWorld);
+	for (int i = 0; i < 14; i++) {
+
+		Bitmap* bmpPtr = FILE_MANAGER->GetBackgroun;
+		GAME_ENGINE->DrawBitmap(bmpPtr);
+	}
+	GAME_ENGINE->SetWorldMatrix(MATRIX3X2::CreateIdentityMatrix());
 }

@@ -99,6 +99,7 @@ copy "$(ProjectDir)Box2DLib\box2dDebug.idb" "$(OutDir)box2d.idb" /y /D</Command>
   <ItemGroup>
     <ClCompile Include="AbstractGame.cpp" />
     <ClCompile Include="Avatar.cpp" />
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="EngineFiles\Bitmap.cpp" />
@@ -120,8 +121,10 @@ copy "$(ProjectDir)Box2DLib\box2dDebug.idb" "$(OutDir)box2d.idb" /y /D</Command>
     <ClCompile Include="EngineFiles\PhysicsRevoluteJoint.cpp" />
     <ClCompile Include="EngineFiles\PrecisionTimer.cpp" />
     <ClCompile Include="Generation.cpp" />
+    <ClCompile Include="LandNPC.cpp" />
     <ClCompile Include="List.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NPC.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -138,6 +141,7 @@ copy "$(ProjectDir)Box2DLib\box2dDebug.idb" "$(OutDir)box2d.idb" /y /D</Command>
   <ItemGroup>
     <ClInclude Include="AbstractGame.h" />
     <ClInclude Include="Avatar.h" />
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="EngineFiles\Bitmap.h" />
@@ -214,8 +218,10 @@ copy "$(ProjectDir)Box2DLib\box2dDebug.idb" "$(OutDir)box2d.idb" /y /D</Command>
     <ClInclude Include="EngineFiles\PhysicsRevoluteJoint.h" />
     <ClInclude Include="EngineFiles\PrecisionTimer.h" />
     <ClInclude Include="Generation.h" />
+    <ClInclude Include="LandNPC.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="NPC.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="EngineFiles\String.h" />

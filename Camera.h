@@ -19,6 +19,6 @@ public:
 
 	void SetViewMatrix(Avatar* avatarPtr);
 private: 
-
+	DOUBLE2 ClampToLevel(DOUBLE2 pos);
 
 };

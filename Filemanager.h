@@ -13,6 +13,7 @@ public:
 	Bitmap* GetBitmap(int number);
 	Bitmap* GetWallBitmap(int number);
 	Bitmap* GetBackgroundBitmap(int number);
+	Bitmap* GetAvatarBitmap(int number);
 	void RemoveAllTextures();
 
 	static FileManager* GetSingleton();
@@ -25,4 +26,5 @@ private:
 	std::vector<Bitmap*> m_BmpArrPtr;
 	std::vector<Bitmap*> m_BmpWallArrPtr;
 	std::vector<Bitmap*> m_BmpBackgroundArrPtr;
+	std::vector<Bitmap*> m_BmpAvatarArrPtr;
 };
