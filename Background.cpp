@@ -24,10 +24,10 @@ Background::~Background()
 void Background::Tick(double deltaTime)
 {
 	m_Counter += deltaTime;
-	if (m_Counter > 0.1) {
-		m_Frame += 1;
-		m_Frame %= 3;
-		m_Counter -= 0.1;
+	if (m_Counter > m_FrameTime) {
+		m_Frame ++;
+		m_Frame %= m_FrameAll;
+		m_Counter -= m_FrameTime;
 	}
 }
 

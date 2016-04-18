@@ -21,6 +21,6 @@ public:
 	virtual void Paint();
 	virtual void DoCollision(World* world, double deltaTime);
 protected:
-	bool CheckForUpHill(int i, int j, Chunk* chunkPtr);
+	bool CheckForUpHill(int x, int y, Chunk* chunkPtr);
 	bool m_isOnGround;
 };

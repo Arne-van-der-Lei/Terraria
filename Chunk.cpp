@@ -114,7 +114,7 @@ void Chunk::PaintTileAt(Tile* tilePtr) {
 	MATRIX3X2 matWorld, matTrans, matScale;
 
 	matTrans.SetAsTranslate(tilePtr->x * TILESIZE + m_X*SIZE*TILESIZE, tilePtr->y * TILESIZE + m_Y*SIZE*TILESIZE);
-	matScale.SetAsScale(TILESIZE / 16);
+	matScale.SetAsScale(2);
 
 	matWorld = matScale *matTrans;
 
@@ -137,7 +137,7 @@ void Chunk::PaintBackgroundAt(Tile* tilePtr) {
 
 	matTrans.SetAsTranslate(tilePtr->x * TILESIZE + m_X*SIZE*TILESIZE, tilePtr->y * TILESIZE + m_Y*SIZE*TILESIZE);
 	matOffset.SetAsTranslate(-TILESIZE / 2, -TILESIZE / 2);
-	matScale.SetAsScale(TILESIZE / 16);
+	matScale.SetAsScale(2);
 
 	matWorldWall = matScale *matTrans*matOffset;
 

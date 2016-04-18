@@ -17,7 +17,7 @@ public:
 	Camera( const Camera& ) = delete;
 	Camera& operator=( const Camera& ) = delete;
 
-	void SetViewMatrix(Avatar* avatarPtr);
+	MATRIX3X2 GetViewMatrix(Avatar* avatarPtr);
 private: 
 	DOUBLE2 ClampToLevel(DOUBLE2 pos);
 

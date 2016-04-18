@@ -11,30 +11,64 @@
 #define GAME_ENGINE (GameEngine::GetSingleton())
 #define FILE_MANAGER (FileManager::GetSingleton())
 
-Avatar::Avatar() : LandNPC({ 16 * 32 * 10,16 * 32 * 2 }, {40,90})
-{
+Avatar::Avatar() : LandNPC({ (double)Chunk::TILESIZE * Chunk::SIZE * m_startChunkX ,(double)Chunk::TILESIZE * Chunk::SIZE * m_startChunkY }, { (double)m_sizeX , (double)m_sizeY })
+{}
 
-}
-
-Avatar::~Avatar()
-{
-}
+Avatar::~Avatar(){}
 
 void Avatar::Tick(double deltaTime)
 {	
 	m_motion.x = 0;
+	if (m_isOnGround) {
+		m_ActionStateBody = ActionState::IDEL;
+		m_ActionStateFeet = ActionState::IDEL;
+	}
 
 	if (GAME_ENGINE->IsKeyboardKeyDown('Q')) {
 		m_motion.x = -120*deltaTime;
+		if (m_ActionStateBody != ActionState::JUMPING && m_ActionStateFeet != ActionState::JUMPING) {
+			if (m_ActionStateBody != ActionState::SWINGING) {
+				m_ActionStateBody = ActionState::WALKING;
+				if (m_FrameBody < 6) {
+					m_FrameBody = 6;
+				}
+			}
+			m_ActionStateFeet = ActionState::WALKING;
+			if (m_FrameFeet < 6) {
+				m_FrameFeet = 6;
+			}
+		}
 	}
 
 	if (GAME_ENGINE->IsKeyboardKeyDown('D')) {
 		m_motion.x = 120* deltaTime;
+
+		if (m_ActionStateBody != ActionState::JUMPING && m_ActionStateFeet != ActionState::JUMPING) {
+			if (m_ActionStateBody != ActionState::SWINGING) {
+				m_ActionStateBody = ActionState::WALKING;
+				if (m_FrameBody < 6) {
+					m_FrameBody = 6;
+				}
+			}
+			m_ActionStateFeet = ActionState::WALKING;
+			if (m_FrameFeet < 6) {
+				m_FrameFeet = 6;
+			}
+		}
 	}
 
 	if (GAME_ENGINE->IsKeyboardKeyPressed(VK_SPACE)) {
 		m_motion.y = -600* deltaTime;
+		m_ActionStateBody = ActionState::JUMPING;
+		m_ActionStateFeet = ActionState::JUMPING;
 	}
+
+	if (GAME_ENGINE->IsMouseButtonDown(VK_LBUTTON)) {
+		m_ActionStateBody = ActionState::SWINGING;
+		
+	}
+	
+	ChangeFrame(deltaTime);
 
 	m_pos.x += m_motion.x;
 	m_pos.y += m_motion.y;
@@ -42,21 +76,83 @@ void Avatar::Tick(double deltaTime)
 
 void Avatar::Paint()
 {
-	GAME_ENGINE->SetColor(COLOR(0, 0, 0));
-	GAME_ENGINE->FillRect(m_pos.x - m_size.x / 2.0, m_pos.y - m_size.y / 2.0, m_pos.x + m_size.x / 2.0, m_pos.y + m_size.y / 2.0);
+	MATRIX3X2 matWorld, matTrans, matScale, matOffset;
 
-	MATRIX3X2 matWorld, matTrans, matScale;
+	m_Dir = m_motion.x != 0 ? (m_motion.x / abs(m_motion.x)) : m_Dir;
+	matTrans.SetAsTranslate(m_pos.x+ m_Dir*8, m_pos.y+18);
+	matScale.SetAsScale(m_Dir*2,2);
+	matOffset.SetAsTranslate(-m_size.x / 2.0, -m_size.y / 2.0);
 
-	matTrans.SetAsTranslate(m_pos.x- m_size.x / 2.0, m_pos.y - m_size.y / 2.0);
-	matScale.SetAsScale(2);
+	matWorld = matOffset * matScale * matTrans;
 
-	matWorld = matScale*matTrans;
+	RECT2 rect;
+	rect.left = 0;
+	rect.top = m_FrameBody * m_FrameHeight;
+	rect.right = m_FrameWidth;
+	rect.bottom = m_FrameBody *m_FrameHeight + m_FrameHeight;
 
+	//GAME_ENGINE->FillRect(m_pos.x - m_size.x / 2.0, m_pos.y - m_size.y / 2.0, m_pos.x + m_size.x / 2.0, m_pos.y + m_size.y / 2.0);
 	GAME_ENGINE->SetWorldMatrix(matWorld);
-	for (int i = 0; i < 14; i++) {
+	for (int i = 0; i < m_FramesFeet; i++) {
+		Bitmap* bmpPtr = FILE_MANAGER->GetAvatarBitmap(i);
+		GAME_ENGINE->DrawBitmap(bmpPtr,rect);
+	}
 
-		Bitmap* bmpPtr = FILE_MANAGER->GetBackgroun;
-		GAME_ENGINE->DrawBitmap(bmpPtr);
+	rect.left = 0;
+	rect.top = m_FrameFeet * m_FrameHeight;
+	rect.right = m_FrameWidth;
+	rect.bottom = m_FrameFeet *m_FrameHeight + m_FrameHeight;
+
+	for (int i = m_FrameFeet; i < m_FrameAll; i++) {
+		Bitmap* bmpPtr = FILE_MANAGER->GetAvatarBitmap(i);
+		GAME_ENGINE->DrawBitmap(bmpPtr, rect);
 	}
 	GAME_ENGINE->SetWorldMatrix(MATRIX3X2::CreateIdentityMatrix());
+}
+
+void Avatar::ChangeFrame(double deltaTime) {
+
+	m_Counter += deltaTime;
+
+	if (m_Counter > m_FrameTime) {
+		switch (m_ActionStateBody) {
+		case ActionState::IDEL :
+			m_FrameBody = m_FrameIdelStart;
+			break;
+		case ActionState::JUMPING:
+			m_FrameBody = m_FrameJumpingStart;
+			break;
+		case ActionState::SWINGING:
+			m_FrameBody++;
+			m_FrameBody %= m_FrameSwingingEnd;
+			if (m_FrameBody == 0) {
+				m_FrameBody = m_FrameSwingingStart;
+			}
+			break;
+		case ActionState::WALKING:
+			m_FrameBody++;
+			m_FrameBody %= m_FrameWalkingEnd;
+			if (m_FrameBody == 0) {
+				m_FrameBody = m_FrameWalkingStart;
+			}
+			break;
+		}
+
+		switch (m_ActionStateFeet) {
+		case ActionState::IDEL:
+			m_FrameFeet = m_FrameIdelStart;
+			break;
+		case ActionState::JUMPING:
+			m_FrameFeet = m_FrameJumpingStart;
+			break;
+		case ActionState::WALKING:
+			m_FrameFeet++;
+			m_FrameFeet %= m_FrameWalkingEnd;
+			if (m_FrameFeet == 0) {
+				m_FrameFeet = m_FrameWalkingStart;
+			}
+			break;
+		}
+		m_Counter -= m_FrameTime;
+	}
 }

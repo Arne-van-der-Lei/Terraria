@@ -60,7 +60,7 @@ void World::Tick(double deltaTime,Avatar* avatarPtr)
 	int y = avatarPtr->GetChunkPos().y;
 
 	for (size_t i = x - 3; i < x + 3; i++) {
-		for (size_t j = y - 3; j < y + 3; j++) {
+		for (size_t j = y - 3; j < y + 4; j++) {
 			if (GetChunkAt(i, j) != nullptr) {
 				GetChunkAt(i, j)->Tick(deltaTime);
 			}
@@ -74,16 +74,16 @@ void World::PaintBackground(Avatar* avatarPtr) {
 
 void World::Paint(int x, int y)
 {
-	for (int i = x - 2; i < x + 3; i++) {
-		for (int j = y - 2; j < y + 2; j++) {
+	for (int i = x - 3; i < x + 4; i++) {
+		for (int j = y - 3; j < y + 3; j++) {
 			if (GetChunkAt(i, j) != nullptr) {
 				GetChunkAt(i, j)->PaintBackground();
 			}
 		}
 	}
 
-	for (int i = x-2; i < x+3; i++) {
-		for (int j = y-2; j < y+2; j++) {
+	for (int i = x - 3; i < x + 4; i++) {
+		for (int j = y-3; j < y+3; j++) {
 			if (GetChunkAt(i, j) != nullptr) {
 				GetChunkAt(i, j)->Paint();
 			}

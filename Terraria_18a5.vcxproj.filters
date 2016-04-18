@@ -124,12 +124,6 @@
     <ClCompile Include="FileManager.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
-    <ClCompile Include="List.cpp">
-      <Filter>Game Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Game Files</Filter>
-    </ClCompile>
     <ClCompile Include="Generation.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
@@ -403,12 +397,6 @@
       <Filter>Game Files</Filter>
     </ClInclude>
     <ClInclude Include="Filemanager.h">
-      <Filter>Game Files</Filter>
-    </ClInclude>
-    <ClInclude Include="List.h">
-      <Filter>Game Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
       <Filter>Game Files</Filter>
     </ClInclude>
     <ClInclude Include="Generation.h">

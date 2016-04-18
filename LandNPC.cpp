@@ -34,6 +34,9 @@ void LandNPC::DoCollision(World* world, double deltaTime) {
 	int blockposX = toprightX / (Chunk::TILESIZE) - chunkPtr->GetX()*Chunk::SIZE;
 	int blockposY = toprightY / (Chunk::TILESIZE) - chunkPtr->GetY()*Chunk::SIZE;
 
+
+	m_isOnGround = false;
+
 	for (int i = blockposX; i < blockposX + (int)ceil(m_size.x / Chunk::TILESIZE) + 1; i++) {
 		for (int j = blockposY; j < blockposY + (int)ceil(m_size.y / Chunk::TILESIZE) + 1; j++) {
 
@@ -44,14 +47,15 @@ void LandNPC::DoCollision(World* world, double deltaTime) {
 			if (tilePtr != nullptr) {
 				if (tilePtr->type != Chunk::Type::AIR) {
 
-					//check 
+					//check down
 					if (j *Chunk::TILESIZE < topRightLocY + m_size.y && (j + 0.5) *Chunk::TILESIZE > topRightLocY + m_size.y
 						&& topRightLocX + m_size.x >(i) *Chunk::TILESIZE && topRightLocX < (i + 1) * Chunk::TILESIZE
 						&& chunkPtr->GetTileAt(i, j - 1)->type == Chunk::Type::AIR) {
 
 						m_pos.y = j * Chunk::TILESIZE + chunkPtr->GetY()* Chunk::TILESIZE* Chunk::SIZE - m_size.y / 2;
 						m_motion.y = 0;
-
+						m_isOnGround = true;
+						//check left
 					} else if ((i + 1) * Chunk::TILESIZE > topRightLocX && (i + 0.5) * Chunk::TILESIZE < topRightLocX
 						&& (j + 1) * Chunk::TILESIZE > topRightLocY && j * Chunk::TILESIZE < topRightLocY + m_size.y
 						&& chunkPtr->GetTileAt(i + 1, j)->type == Chunk::Type::AIR) {
@@ -61,7 +65,7 @@ void LandNPC::DoCollision(World* world, double deltaTime) {
 						} else if (j == blockposY + (int)floor(m_size.y / Chunk::TILESIZE)) {
 							m_pos.y = j * Chunk::TILESIZE + chunkPtr->GetY()* Chunk::TILESIZE* Chunk::SIZE - m_size.y / 2;
 						}
-
+						//check right
 					} else if (i * Chunk::TILESIZE < topRightLocX + m_size.x && (i + 0.5) * Chunk::TILESIZE > topRightLocX + m_size.x
 						&& (j + 1) * Chunk::TILESIZE > topRightLocY && j * Chunk::TILESIZE < topRightLocY + m_size.y
 						&& chunkPtr->GetTileAt(i - 1, j)->type == Chunk::Type::AIR) {
@@ -71,7 +75,7 @@ void LandNPC::DoCollision(World* world, double deltaTime) {
 						} else if (j == blockposY + (int)floor(m_size.y / Chunk::TILESIZE)) {
 							m_pos.y = j * Chunk::TILESIZE + chunkPtr->GetY()* Chunk::TILESIZE* Chunk::SIZE - m_size.y / 2;
 						}
-
+						//check up
 					} else if ((j + 1) *Chunk::TILESIZE > topRightLocY && (j + 0.5) *Chunk::TILESIZE < topRightLocY
 						&& topRightLocX + m_size.x >(i) *Chunk::TILESIZE && topRightLocX < (i + 1) *Chunk::TILESIZE
 						&& chunkPtr->GetTileAt(i, j + 1)->type == Chunk::Type::AIR) {
@@ -79,7 +83,6 @@ void LandNPC::DoCollision(World* world, double deltaTime) {
 						m_pos.y = (j + 1) * Chunk::TILESIZE + chunkPtr->GetY()* Chunk::TILESIZE* Chunk::SIZE + m_size.y / 2;
 						m_motion.y = 0;
 					}
-
 				} else {
 					m_motion.y += 1 * deltaTime;
 				}
@@ -88,10 +91,10 @@ void LandNPC::DoCollision(World* world, double deltaTime) {
 	}
 }
 
-bool LandNPC::CheckForUpHill(int i, int j, Chunk* chunkPtr) {
+bool LandNPC::CheckForUpHill(int x, int y, Chunk* chunkPtr) {
 	bool check = true;
 	for (int k = 1; k < (int)ceil(m_size.y / Chunk::TILESIZE) + 1; k++) {
-		if (chunkPtr->GetTileAt(i, j - k)->type != Chunk::Type::AIR) {
+		if (chunkPtr->GetTileAt(x, y - k)->type != Chunk::Type::AIR) {
 			check = false;
 		}
 	}

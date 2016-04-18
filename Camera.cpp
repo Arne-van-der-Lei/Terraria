@@ -18,7 +18,7 @@ Camera::~Camera()
 {
 }
 
-void Camera::SetViewMatrix(Avatar* avatarPtr)
+MATRIX3X2 Camera::GetViewMatrix(Avatar* avatarPtr)
 {
 	MATRIX3X2 matView;
 	DOUBLE2 pos = avatarPtr->GetPosition();
@@ -32,7 +32,7 @@ void Camera::SetViewMatrix(Avatar* avatarPtr)
 
 	matView.SetAsTranslate(-pos);
 
-	GAME_ENGINE->SetViewMatrix(matView);
+	return matView;
 }
 
 DOUBLE2 Camera::ClampToLevel(DOUBLE2 pos) {

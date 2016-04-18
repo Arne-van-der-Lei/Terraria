@@ -56,8 +56,7 @@ void List::Add(DOUBLE2 value, DOUBLE2 value2)
 
 	//insert end
 	prevNode->SetNext(nodePtr2);
-
-}
+	}
 
 std::vector<DOUBLE2> List::ToVector() {
 	std::vector<DOUBLE2> vec;

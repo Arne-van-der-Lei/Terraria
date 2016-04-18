@@ -4,7 +4,6 @@
 // Name: van der Lei Arne
 // Group: 1DAE16
 //-----------------------------------------------------------------
-#include "list.h"
 class World;
 
 struct Tile {
@@ -70,12 +69,10 @@ public:
 private: 
 
 	std::vector<Tile*> m_TileArrPtr;
-	List m_BorderList;
 	World * m_WorldPtr = nullptr; 
 	int m_X = 0;
 	int m_Y = 0;
 	int m_biome = 0;
-	PhysicsActor* m_ActPtr = nullptr;
 
 	bool CheckTileToAir(Tile* currentTilePtr, Tile* tilePtr);
 	bool CheckTileToBackgroundAir(Tile* currentTilePtr, Tile* tilePtr);

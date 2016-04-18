@@ -74,11 +74,10 @@ void Terraria::GameTick(double deltaTime)
 {
 	m_deltatime = deltaTime;
 
-	m_CameraPtr->SetViewMatrix(m_AvatarPtr);
 	if (GAME_ENGINE->IsMouseButtonPressed(VK_LBUTTON)) {
 		DOUBLE2 mousePos = GAME_ENGINE->GetMousePosition();
 
-		DOUBLE2 worldMousePos = GAME_ENGINE->GetViewMatrix().Inverse().TransformPoint(mousePos);
+		DOUBLE2 worldMousePos = m_CameraPtr->GetViewMatrix(m_AvatarPtr).Inverse().TransformPoint(mousePos);
 
 		DOUBLE2 chunkPos = worldMousePos / (Chunk::TILESIZE*Chunk::SIZE);
 		m_WorldPtr->GetChunkAt(chunkPos)->DigTileAt(worldMousePos.x / Chunk::TILESIZE - (int)chunkPos.x * Chunk::SIZE  , worldMousePos.y / Chunk::TILESIZE - (int)chunkPos.y * Chunk::SIZE);
@@ -101,7 +100,7 @@ void Terraria::GamePaint()
 	}
 	m_WorldPtr->PaintBackground(m_AvatarPtr);
 
-	m_CameraPtr->SetViewMatrix(m_AvatarPtr);
+	GAME_ENGINE->SetViewMatrix(m_CameraPtr->GetViewMatrix(m_AvatarPtr));
 
 	m_WorldPtr->Paint(m_AvatarPtr->GetChunkPos().x, m_AvatarPtr->GetChunkPos().y);
 	m_AvatarPtr->Paint();

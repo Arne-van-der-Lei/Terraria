@@ -76,7 +76,6 @@ private:
 
 	std::vector<NPC* > m_NPCArrPtr; 
 
-	PhysicsActor* m_GroundPtr = nullptr;
 	double m_deltatime = 0;
 };
 
