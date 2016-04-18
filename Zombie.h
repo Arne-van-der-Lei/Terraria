@@ -22,4 +22,6 @@ public:
 	virtual void Tick(double deltaTime,Avatar* avatar);
 	virtual void Paint();
 private: 
+
+	bool m_Dir;
 };

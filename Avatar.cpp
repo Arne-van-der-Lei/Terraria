@@ -25,6 +25,7 @@ void Avatar::Tick(double deltaTime)
 
 	if (GAME_ENGINE->IsKeyboardKeyDown('Q')) {
 		m_motion.x = -120*deltaTime;
+		m_Dir = false;
 		if (m_ActionStateBody != ActionState::JUMPING && m_ActionStateFeet != ActionState::JUMPING) {
 			if (m_ActionStateBody != ActionState::SWINGING) {
 				m_ActionStateBody = ActionState::WALKING;
@@ -41,7 +42,7 @@ void Avatar::Tick(double deltaTime)
 
 	if (GAME_ENGINE->IsKeyboardKeyDown('D')) {
 		m_motion.x = 120* deltaTime;
-
+		m_Dir = true;
 		if (m_ActionStateBody != ActionState::JUMPING && m_ActionStateFeet != ActionState::JUMPING) {
 			if (m_ActionStateBody != ActionState::SWINGING) {
 				m_ActionStateBody = ActionState::WALKING;
@@ -74,9 +75,8 @@ void Avatar::Paint()
 {
 	MATRIX3X2 matWorld, matTrans, matScale, matOffset;
 
-	m_Dir = m_motion.x != 0 ? (m_motion.x / abs(m_motion.x)) : m_Dir;
-	matTrans.SetAsTranslate(m_pos.x+ m_Dir*8, m_pos.y+18);
-	matScale.SetAsScale(m_Dir*2,2);
+	matTrans.SetAsTranslate(m_pos.x + (m_Dir * 2 - 1) * 8, m_pos.y + 18);
+	matScale.SetAsScale((m_Dir * 2 - 1) * 2, 2);
 	matOffset.SetAsTranslate(-m_size.x / 2.0, -m_size.y / 2.0);
 
 	matWorld = matOffset * matScale * matTrans;

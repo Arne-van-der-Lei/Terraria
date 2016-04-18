@@ -25,9 +25,11 @@ void Zombie::Tick(double deltaTime,Avatar* avatarPtr)
 {
 	if (avatarPtr->GetPosition().x > m_pos.x) {
 		m_motion.x = m_Speed.x*deltaTime;
+		m_Dir = false;
 	}
 	if (avatarPtr->GetPosition().x < m_pos.x) {
 		m_motion.x = -m_Speed.x*deltaTime;
+		m_Dir = true;
 	}
 
 	updateFrame(deltaTime);
@@ -37,7 +39,7 @@ void Zombie::Paint()
 {
 	MATRIX3X2 matWorld, matTrans, matScale, matOffset;
 	matTrans.SetAsTranslate(m_pos.x, m_pos.y );
-	matScale.SetAsScale(2);
+	matScale.SetAsScale((m_Dir * 2 - 1)*2,2);
 	matOffset.SetAsTranslate(-m_FrameSize.x / 2.0, -m_FrameSize.y / 2.0);
 
 	matWorld = matOffset * matScale * matTrans;

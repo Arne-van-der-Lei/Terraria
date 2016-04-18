@@ -30,7 +30,7 @@ private:
 
 	void ChangeFrame(double deltaTime);
 
-	int m_Dir = 1;
+	bool m_Dir = true;
 	int m_FrameBody = 0;
 	int m_FrameFeet = 0;
 
