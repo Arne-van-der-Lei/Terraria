@@ -136,6 +136,15 @@
     <ClCompile Include="LandNPC.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hostile.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animatable.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -409,6 +418,15 @@
       <Filter>Game Files</Filter>
     </ClInclude>
     <ClInclude Include="LandNPC.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hostile.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animatable.h">
       <Filter>Game Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -19,6 +19,7 @@ public:
 	virtual void Tick(double deltaTime) = 0;
 	virtual void Paint() = 0;
 	virtual void DoCollision(World* world, double deltaTime) = 0;
+
 	DOUBLE2 GetPosition();
 	DOUBLE2 GetBlockPos();
 	DOUBLE2 GetChunkPos();
@@ -26,5 +27,6 @@ public:
 	DOUBLE2 m_pos;
 	DOUBLE2 m_size;
 	DOUBLE2 m_motion;
+	DOUBLE2 m_Speed;
 
 };

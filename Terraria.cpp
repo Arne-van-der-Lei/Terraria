@@ -18,6 +18,7 @@
 #include "World.h"
 #include "Filemanager.h"
 #include "Chunk.h"
+#include "Zombie.h"
 //-----------------------------------------------------------------
 // Defines
 //-----------------------------------------------------------------
@@ -50,10 +51,10 @@ void Terraria::GameInitialize(GameSettings &gameSettingsRef)
 void Terraria::GameStart()
 {
 	GAME_ENGINE->SetBitmapInterpolationModeNearestNeighbor();
-	m_AvatarPtr = new Avatar();
+	m_AvatarPtr = new Avatar({ 16 * 32 * 10,16 * 32 * 2 }, { 48,84 });
 	m_CameraPtr = new Camera();
 	m_WorldPtr = new World();
-
+	m_NPCArrPtr.push_back(new Zombie({ 9 * 32 * 16,0 }, {58,90}));
 }
 
 void Terraria::GameEnd()
@@ -68,6 +69,11 @@ void Terraria::GameEnd()
 
 	delete m_WorldPtr;
 	m_WorldPtr = nullptr;
+
+	for (NPC* NPCPtr : m_NPCArrPtr) {
+		delete NPCPtr;
+		NPCPtr = nullptr;
+	}
 }
 
 void Terraria::GameTick(double deltaTime)
@@ -85,7 +91,13 @@ void Terraria::GameTick(double deltaTime)
 
 	m_AvatarPtr->Tick(deltaTime);
 	m_AvatarPtr->DoCollision(m_WorldPtr, deltaTime);
-
+	for (NPC* NPCPtr : m_NPCArrPtr) {
+		if (dynamic_cast<Hostile *>(NPCPtr)) {
+			dynamic_cast<Hostile *>(NPCPtr)->Tick(deltaTime, m_AvatarPtr);
+		}
+		NPCPtr->DoCollision(m_WorldPtr,deltaTime);
+	}
+	
 	m_WorldPtr->Tick(deltaTime,m_AvatarPtr);
 }
 
@@ -104,6 +116,10 @@ void Terraria::GamePaint()
 
 	m_WorldPtr->Paint(m_AvatarPtr->GetChunkPos().x, m_AvatarPtr->GetChunkPos().y);
 	m_AvatarPtr->Paint();
+
+	for (NPC* NPCPtr : m_NPCArrPtr) {
+		NPCPtr->Paint();
+	}
 
 	GAME_ENGINE->SetViewMatrix(MATRIX3X2::CreateIdentityMatrix());
 	GAME_ENGINE->DrawString(String(floor(m_AvatarPtr->GetPosition().x / (double)(Chunk::TILESIZE*Chunk::SIZE))), 0, 0);

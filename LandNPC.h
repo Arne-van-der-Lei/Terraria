@@ -17,9 +17,10 @@ public:
 	LandNPC( const LandNPC& ) = delete;
 	LandNPC& operator=( const LandNPC& ) = delete;
 
-	virtual void Tick(double deltaTime) ;
-	virtual void Paint();
+	virtual void Tick(double deltaTime) {};
+	virtual void Paint() {};
 	virtual void DoCollision(World* world, double deltaTime);
+
 protected:
 	bool CheckForUpHill(int x, int y, Chunk* chunkPtr);
 	bool m_isOnGround;

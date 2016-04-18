@@ -11,8 +11,7 @@
 #define GAME_ENGINE (GameEngine::GetSingleton())
 #define FILE_MANAGER (FileManager::GetSingleton())
 
-Avatar::Avatar() : LandNPC({ (double)Chunk::TILESIZE * Chunk::SIZE * m_startChunkX ,(double)Chunk::TILESIZE * Chunk::SIZE * m_startChunkY }, { (double)m_sizeX , (double)m_sizeY })
-{}
+Avatar::Avatar(DOUBLE2 pos, DOUBLE2 size): LandNPC(pos,size){}
 
 Avatar::~Avatar(){}
 
@@ -69,9 +68,6 @@ void Avatar::Tick(double deltaTime)
 	}
 	
 	ChangeFrame(deltaTime);
-
-	m_pos.x += m_motion.x;
-	m_pos.y += m_motion.y;
 }
 
 void Avatar::Paint()
@@ -103,7 +99,7 @@ void Avatar::Paint()
 	rect.right = m_FrameWidth;
 	rect.bottom = m_FrameFeet *m_FrameHeight + m_FrameHeight;
 
-	for (int i = m_FrameFeet; i < m_FrameAll; i++) {
+	for (int i = m_FramesFeet; i < m_FrameAll; i++) {
 		Bitmap* bmpPtr = FILE_MANAGER->GetAvatarBitmap(i);
 		GAME_ENGINE->DrawBitmap(bmpPtr, rect);
 	}

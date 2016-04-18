@@ -26,7 +26,7 @@ public:
 	
 private: 
 
-	const int m_FrameTime = 0.1;
+	const int m_FrameTime = 0.5;
 	const int m_FrameAll = 3;
 	int m_Frame;
 	double m_Counter;

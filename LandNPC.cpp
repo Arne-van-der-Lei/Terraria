@@ -10,16 +10,13 @@
 
 LandNPC::LandNPC(DOUBLE2 pos, DOUBLE2 size): NPC( pos, size) {
 	m_isOnGround = false;
-
 }
 
 LandNPC::~LandNPC() {}
 
-void LandNPC::Tick(double deltaTime) {}
-
-void LandNPC::Paint() {}
-
 void LandNPC::DoCollision(World* world, double deltaTime) {
+	m_pos.x += m_motion.x;
+	m_pos.y += m_motion.y;
 
 	int toprightX = (int)(m_pos.x - m_size.x / 2.0);
 	int toprightY = (int)(m_pos.y - m_size.y / 2.0);

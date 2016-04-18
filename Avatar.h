@@ -10,7 +10,7 @@
 class Avatar : public LandNPC
 {
 public:
-	Avatar( );
+	Avatar(DOUBLE2 pos, DOUBLE2 size);
 	virtual ~Avatar( );
 	// Make objects non-copyable
 	// https://msdn.microsoft.com/en-us/library/dn457344.aspx 
@@ -47,10 +47,10 @@ private:
 
 	const int m_FrameJumpingStart = 5;
 
-	const int m_startChunkX = 10;
-	const int m_startChunkY = 2;
+	const int m_startChunkX = 10 * 16 * 32;
+	const int m_startChunkY = 2 * 16 * 32;
 
-	const int m_FrameTime = 0.05;
+	const double m_FrameTime = 0.05;
 
 	const int m_sizeX = 48;
 	const int m_sizeY = 84;

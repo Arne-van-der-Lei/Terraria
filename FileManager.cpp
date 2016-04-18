@@ -25,6 +25,9 @@ void FileManager::GetAllTextures() {
 	for (int i = 0; i < 14; i++) {
 		m_BmpAvatarArrPtr.push_back(new Bitmap(String("./Resources/Player_0_") + String(i) + String(".png")));
 	}
+	for (int i = 1; i < 5; i++) {
+		m_BmpNPCArrPtr.push_back(new Bitmap(String("./Resources/NPC_") + String(i) + String(".png")));
+	}
 }
 
 FileManager::~FileManager() {
@@ -47,10 +50,15 @@ FileManager::~FileManager() {
 		delete bitmapPtr;
 		bitmapPtr = nullptr;
 	}
+	for (Bitmap * bitmapPtr : m_BmpNPCArrPtr) {
+		delete bitmapPtr;
+		bitmapPtr = nullptr;
+	}
 	m_BmpArrPtr.clear();
 	m_BmpWallArrPtr.clear();
 	m_BmpBackgroundArrPtr.clear();
 	m_BmpAvatarArrPtr.clear();
+	m_BmpNPCArrPtr.clear();
 }
 
 FileManager::FileManager() {	
@@ -71,6 +79,10 @@ Bitmap* FileManager::GetBackgroundBitmap(int number) {
 
 Bitmap* FileManager::GetAvatarBitmap(int number) {
 	return m_BmpAvatarArrPtr[number];
+}
+
+Bitmap* FileManager::GetNPCBitmap(int number) {
+	return m_BmpNPCArrPtr[number];
 }
 
 FileManager* FileManager::GetSingleton() {
