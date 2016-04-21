@@ -4,20 +4,19 @@
 // Name: van der Lei Arne
 // Group: 1DAE16
 //-----------------------------------------------------------------
-class Avatar;
-class World;
-class Hostile {
+class ItemStack;
+class Inventory {
 public:
-	Hostile();
-	virtual ~Hostile( );
+	Inventory();
+	virtual ~Inventory( );
 	// Make objects non-copyable
 	// https://msdn.microsoft.com/en-us/library/dn457344.aspx 
-	Hostile( const Hostile& ) = delete;
-	Hostile& operator=( const Hostile& ) = delete;
+	Inventory( const Inventory& ) = delete;
+	Inventory& operator=( const Inventory& ) = delete;
 
-	virtual void Tick(double deltaTime, Avatar* avatar, World* worldPtr) = 0;
-	virtual void Paint() = 0;
-private: 
-
-
+	virtual void Paint(bool open,int x,int y);
+ 
+	int m_Width;
+	int m_Height;
+	std::vector<ItemStack*> m_contents;
 };

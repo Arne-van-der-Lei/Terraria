@@ -15,6 +15,8 @@ public:
 	Bitmap* GetBackgroundBitmap(int number);
 	Bitmap* GetAvatarBitmap(int number);
 	Bitmap* GetNPCBitmap(int number);
+	Bitmap* GetItemBitmap(int number);
+	Bitmap* GetHUDBitmap(int number);
 	void RemoveAllTextures();
 
 	static FileManager* GetSingleton();
@@ -29,4 +31,6 @@ private:
 	std::vector<Bitmap*> m_BmpBackgroundArrPtr;
 	std::vector<Bitmap*> m_BmpAvatarArrPtr;
 	std::vector<Bitmap*> m_BmpNPCArrPtr;
+	std::vector<Bitmap*> m_BmpItemArrPtr;
+	std::vector<Bitmap*> m_BmpHUDArrPtr;
 };

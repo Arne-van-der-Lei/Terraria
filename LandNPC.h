@@ -20,7 +20,7 @@ public:
 	virtual void Tick(double deltaTime) {};
 	virtual void Paint() {};
 	virtual void DoCollision(World* world, double deltaTime);
-
+	virtual bool afterMathUpHill(int x, int y, Chunk* chunkPtr, bool result) { return result; };
 protected:
 	bool CheckForUpHill(int x, int y, Chunk* chunkPtr);
 	bool m_isOnGround;

@@ -19,9 +19,11 @@ public:
 	Zombie( const Zombie& ) = delete;
 	Zombie& operator=( const Zombie& ) = delete;
 
-	virtual void Tick(double deltaTime,Avatar* avatar);
+	virtual void Tick(double deltaTime,Avatar* avatar, World* worldPtr);
 	virtual void Paint();
+	virtual bool afterMathUpHill(int x, int y, Chunk* chunkPtr,bool result);
 private: 
 
 	bool m_Dir;
+	bool m_Jump;
 };

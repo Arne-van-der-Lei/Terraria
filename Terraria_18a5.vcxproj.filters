@@ -145,6 +145,18 @@
     <ClCompile Include="Animatable.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemStack.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AvatarInv.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -427,6 +439,18 @@
       <Filter>Game Files</Filter>
     </ClInclude>
     <ClInclude Include="Animatable.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemStack.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AvatarInv.h">
       <Filter>Game Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -100,6 +100,7 @@ copy "$(ProjectDir)Box2DLib\box2dDebug.idb" "$(OutDir)box2d.idb" /y /D</Command>
     <ClCompile Include="AbstractGame.cpp" />
     <ClCompile Include="Animatable.cpp" />
     <ClCompile Include="Avatar.cpp" />
+    <ClCompile Include="AvatarInv.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
@@ -123,6 +124,9 @@ copy "$(ProjectDir)Box2DLib\box2dDebug.idb" "$(OutDir)box2d.idb" /y /D</Command>
     <ClCompile Include="EngineFiles\PrecisionTimer.cpp" />
     <ClCompile Include="Generation.cpp" />
     <ClCompile Include="Hostile.cpp" />
+    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="ItemStack.cpp" />
     <ClCompile Include="LandNPC.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -143,6 +147,7 @@ copy "$(ProjectDir)Box2DLib\box2dDebug.idb" "$(OutDir)box2d.idb" /y /D</Command>
     <ClInclude Include="AbstractGame.h" />
     <ClInclude Include="Animatable.h" />
     <ClInclude Include="Avatar.h" />
+    <ClInclude Include="AvatarInv.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chunk.h" />
@@ -221,6 +226,9 @@ copy "$(ProjectDir)Box2DLib\box2dDebug.idb" "$(OutDir)box2d.idb" /y /D</Command>
     <ClInclude Include="EngineFiles\PrecisionTimer.h" />
     <ClInclude Include="Generation.h" />
     <ClInclude Include="Hostile.h" />
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="ItemStack.h" />
     <ClInclude Include="LandNPC.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="resource.h" />

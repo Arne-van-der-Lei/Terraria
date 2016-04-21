@@ -31,7 +31,6 @@ void LandNPC::DoCollision(World* world, double deltaTime) {
 	int blockposX = toprightX / (Chunk::TILESIZE) - chunkPtr->GetX()*Chunk::SIZE;
 	int blockposY = toprightY / (Chunk::TILESIZE) - chunkPtr->GetY()*Chunk::SIZE;
 
-
 	m_isOnGround = false;
 
 	for (int i = blockposX; i < blockposX + (int)ceil(m_size.x / Chunk::TILESIZE) + 1; i++) {
@@ -95,5 +94,6 @@ bool LandNPC::CheckForUpHill(int x, int y, Chunk* chunkPtr) {
 			check = false;
 		}
 	}
-	return check;
+
+	return afterMathUpHill(x, y, chunkPtr, check);
 }

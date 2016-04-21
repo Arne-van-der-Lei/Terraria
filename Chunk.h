@@ -57,11 +57,10 @@ public:
 	void PaintBackground();
 	Tile* GetTileAt(int x, int y);
 	void RemoveTileAt(int x, int y);
-	void AfterInit();	
-	void PaintTileAt(Tile* tilePtr);
-	void PaintBackgroundAt(Tile* tilePtr);
+	void AfterInit();
 	void SetTileAt(int x,int y, Tile* tile);
 	void DigTileAt(int x, int y);
+
 	int GetX();
 	int GetY();
 	int GetBiome();
@@ -83,5 +82,8 @@ private:
 	void CalculateBorder();
 
 	DOUBLE2 GetGlobalLocation();
+
+	void PaintTileAt(Tile* tilePtr);
+	void PaintBackgroundAt(Tile* tilePtr);
 
 };
