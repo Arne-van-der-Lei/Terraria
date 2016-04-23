@@ -15,6 +15,7 @@ public:
 	Inventory& operator=( const Inventory& ) = delete;
 
 	virtual void Paint(bool open,int x,int y);
+	virtual bool AddItemToInventory(ItemStack* itemStackPtr);
  
 	int m_Width;
 	int m_Height;

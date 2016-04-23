@@ -20,6 +20,8 @@
 #include "Chunk.h"
 #include "Zombie.h"
 #include "HUD.h"
+#include "ItemEntity.h"
+#include "ItemStack.h"
 //-----------------------------------------------------------------
 // Defines
 //-----------------------------------------------------------------
@@ -52,11 +54,12 @@ void Terraria::GameInitialize(GameSettings &gameSettingsRef)
 void Terraria::GameStart()
 {
 	GAME_ENGINE->SetBitmapInterpolationModeNearestNeighbor();
-	m_AvatarPtr = new Avatar({ 16 * 32 * 10,16 * 32 * 2 }, { 48,84 });
+	m_AvatarPtr = new Avatar({ 16 * 32 * 10, 16 * 32 * 4-32 }, { 48,84 });
 	m_CameraPtr = new Camera();
 	m_WorldPtr = new World();
 	m_NPCArrPtr.push_back(new Zombie({ 9 * 32 * 16,0 }, {58,90}));
 	m_HUD = new HUD();
+
 }
 
 void Terraria::GameEnd()
@@ -90,8 +93,14 @@ void Terraria::GameTick(double deltaTime)
 
 		DOUBLE2 worldMousePos = m_CameraPtr->GetViewMatrix(m_AvatarPtr).Inverse().TransformPoint(mousePos);
 
-		DOUBLE2 chunkPos = worldMousePos / (Chunk::TILESIZE*Chunk::SIZE);
-		m_WorldPtr->GetChunkAt(chunkPos)->DigTileAt(worldMousePos.x / Chunk::TILESIZE - (int)chunkPos.x * Chunk::SIZE  , worldMousePos.y / Chunk::TILESIZE - (int)chunkPos.y * Chunk::SIZE);
+		DOUBLE2 chunkPos = worldMousePos / (double)(Chunk::TILESIZE*Chunk::SIZE);
+
+		Chunk* chunkPtr = m_WorldPtr->GetChunkAt(chunkPos);
+		int x = worldMousePos.x / Chunk::TILESIZE - (int)chunkPos.x * Chunk::SIZE, y = worldMousePos.y / Chunk::TILESIZE - (int)chunkPos.y * Chunk::SIZE;
+		if (chunkPtr->GetTileAt(x, y)->type != Chunk::AIR) {
+			m_NPCArrPtr.push_back(new ItemEntity(m_AvatarPtr->GetPosition(), { 20, 20 }, chunkPtr->GetItemFromTile(x, y)));
+			chunkPtr->DigTileAt(x, y);
+		}
 	}
 
 	if (GAME_ENGINE->IsKeyboardKeyPressed(VK_ESCAPE)) {
@@ -106,7 +115,17 @@ void Terraria::GameTick(double deltaTime)
 		}
 		NPCPtr->DoCollision(m_WorldPtr,deltaTime);
 	}
-	
+
+	for (int i = 0; i < m_NPCArrPtr.size(); i++) {
+		if (m_NPCArrPtr.at(i)->ColidesWith(m_AvatarPtr)) {
+			if (dynamic_cast<ItemEntity*>(m_NPCArrPtr.at(i))) {
+				ItemEntity* ItemEntityPtr = dynamic_cast<ItemEntity*>(m_NPCArrPtr.at(i));
+				m_HUD->AddItem(new ItemStack(ItemEntityPtr->GetId()));
+				m_NPCArrPtr.erase(m_NPCArrPtr.begin() + i);
+			}
+		}
+	}
+
 	m_WorldPtr->Tick(deltaTime,m_AvatarPtr);
 }
 
@@ -134,6 +153,7 @@ void Terraria::GamePaint()
 	GAME_ENGINE->SetViewMatrix(MATRIX3X2::CreateIdentityMatrix());
 
 	m_HUD->Paint();
+
 	GAME_ENGINE->DrawString(String(floor(m_AvatarPtr->GetPosition().x / (double)(Chunk::TILESIZE*Chunk::SIZE))), 0, 0);
 	GAME_ENGINE->DrawString(String(floor(m_AvatarPtr->GetPosition().y / (double)(Chunk::TILESIZE*Chunk::SIZE))), 0, 12);
 	GAME_ENGINE->DrawString(String(m_AvatarPtr->GetBlockPos().x), 0, 24);

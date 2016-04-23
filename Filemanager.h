@@ -19,6 +19,8 @@ public:
 	Bitmap* GetHUDBitmap(int number);
 	void RemoveAllTextures();
 
+	void DrawString(String str, DOUBLE2 pos);
+
 	static FileManager* GetSingleton();
 
 private: 

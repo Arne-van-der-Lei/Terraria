@@ -89,9 +89,9 @@ void Generation::GenerateChunks(World* worldPtr) {
 
 void Generation::GenerateTileAt(int i, int j, Chunk* chunkPtr) {
 	Tile * tilePtr = chunkPtr->GetTileAt(i, j);
-	if (chunkPtr->GetY() *Chunk::SIZE + j < 2*Chunk::SIZE ){
+	if (chunkPtr->GetY() *Chunk::SIZE + j < 4*Chunk::SIZE ){
 		tilePtr->type = Chunk::Type::AIR;
-    } else if (chunkPtr->GetY() *Chunk::SIZE + j >  3*Chunk::SIZE) {
+    } else if (chunkPtr->GetY() *Chunk::SIZE + j >  5*Chunk::SIZE) {
 		tilePtr->type = Chunk::Type::COBBLE;
 	} else {
 		tilePtr->type = Chunk::Type::DIRT;

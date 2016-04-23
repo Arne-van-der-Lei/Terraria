@@ -14,7 +14,7 @@
 #define FILE_MANAGER (FileManager::GetSingleton())
 
 Zombie::Zombie(DOUBLE2 pos,DOUBLE2 size):LandNPC(pos,size){
-	m_Speed.x = 120;
+	m_Speed.x = 100;
 	m_Speed.y = 600;
 
 	m_FrameSize = DOUBLE2( 34,48 );

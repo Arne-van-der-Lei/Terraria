@@ -6,7 +6,7 @@
 #include "stdafx.h"		
 #include "FileManager.h"
 
-//#define GAME_ENGINE (GameEngine::GetSingleton())
+#define GAME_ENGINE (GameEngine::GetSingleton())
 
 FileManager* FileManager::m_FileManagerPtr = nullptr;
 
@@ -32,6 +32,12 @@ void FileManager::GetAllTextures() {
 		m_BmpItemArrPtr.push_back(new Bitmap(String("./Resources/Item_") + String(i) + String(".png")));
 	}
 	m_BmpHUDArrPtr.push_back(new Bitmap(String("./Resources/Inventory_Back.png")));
+	m_BmpHUDArrPtr.push_back(new Bitmap(String("./Resources/font.png")));
+	m_BmpHUDArrPtr.at(1)->SetTransparencyColor(COLOR(100, 149, 237));
+	m_BmpItemArrPtr.push_back(new Bitmap(String("./Resources/Item_1.png")));
+	m_BmpItemArrPtr.push_back(new Bitmap(String("./Resources/Item_2.png")));
+	m_BmpItemArrPtr.push_back(new Bitmap(String("./Resources/Item_3.png")));
+	m_BmpItemArrPtr.push_back(new Bitmap(String("./Resources/Item_4.png")));
 }
 
 FileManager::~FileManager() {
@@ -95,7 +101,7 @@ Bitmap* FileManager::GetNPCBitmap(int number) {
 }
 
 Bitmap* FileManager::GetItemBitmap(int number) {
-	return m_BmpNPCArrPtr[number];
+	return m_BmpItemArrPtr[number-1];
 }
 
 Bitmap* FileManager::GetHUDBitmap(int number) {
@@ -112,4 +118,16 @@ FileManager* FileManager::GetSingleton() {
 void FileManager::RemoveAllTextures() {
 	delete m_FileManagerPtr;
 	m_FileManagerPtr = nullptr;
+}
+
+void FileManager::DrawString(String str,DOUBLE2 pos) {
+	for (int i = 0; i < str.Length(); i++) {
+
+		RECT2 rect;
+		rect.left = (str.At(i)-48)*12;
+		rect.right = (str.At(i) - 48 + 1) * 12;
+		rect.top = 0;
+		rect.bottom = 40;
+		GAME_ENGINE->DrawBitmap(m_BmpHUDArrPtr.at(1),pos.x + i*6,pos.y,rect);
+	}
 }

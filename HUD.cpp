@@ -6,10 +6,13 @@
 #include "stdafx.h"		
 #include "HUD.h"
 #include "AvatarInv.h"
+#include "ItemStack.h"
 
 HUD::HUD(){
 	m_CurrentInvPtr = new AvatarInv();
 	m_Open = false;
+
+	m_CurrentInvPtr->AddItemToInventory(new ItemStack(2,10));
 }
 
 HUD::~HUD(){
@@ -29,4 +32,8 @@ void HUD::Paint() {
 
 void HUD::ToggleInventory() {
 	m_Open = !m_Open;
+}
+
+void HUD::AddItem(ItemStack* itemPtr) {
+	m_CurrentInvPtr->AddItemToInventory(itemPtr);
 }

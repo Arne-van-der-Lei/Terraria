@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------
 class Avatar;
 class Inventory;
+class ItemStack;
 
 class HUD {
 public:
@@ -18,6 +19,7 @@ public:
 
 	virtual void Paint();
 	void ToggleInventory();
+	void AddItem(ItemStack* itemPtr);
 private: 
 
 	Inventory* m_CurrentInvPtr;

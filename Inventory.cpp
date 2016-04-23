@@ -27,13 +27,23 @@ Inventory::~Inventory(){
 }
 
 void Inventory::Paint(bool open, int x,int y) {
-	std::cout << open << std::endl;
+	//std::cout << open << std::endl;
 	for (int i = 0; i < m_Height;i++) {
 		for (int j = 0; j < m_Width; j++) {
 			GAME_ENGINE->DrawBitmap(FILE_MANAGER->GetHUDBitmap(0), j * 55 + x, y + i * 55);
 			if (m_contents.at(i*m_Height + j)->GetAmount() != 0) {
-				m_contents.at(i*m_Height + j)->Paint(i, j);
+				m_contents.at(i*m_Height + j)->Paint(i*55+x, j*55+y);
 			}
 		}
 	}
+}
+
+
+bool Inventory::AddItemToInventory(ItemStack* itemStackPtr) {
+	for (ItemStack* item : m_contents) {
+		if (item->Add(itemStackPtr)) {
+			return true;
+		}
+	}
+	return false;
 }

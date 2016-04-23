@@ -19,6 +19,7 @@ public:
 	virtual void Tick(double deltaTime) = 0;
 	virtual void Paint() = 0;
 	virtual void DoCollision(World* world, double deltaTime) = 0;
+	bool ColidesWith(NPC* NPCPtr);
 
 	DOUBLE2 GetPosition();
 	DOUBLE2 GetBlockPos();

@@ -11,7 +11,7 @@
 #define GAME_ENGINE (GameEngine::GetSingleton())
 #define FILE_MANAGER (FileManager::GetSingleton())
 
-AvatarInv::AvatarInv(){
+AvatarInv::AvatarInv():Inventory(){
 	for (int i = 0; i < m_Width; i++) {
 		m_hotbar.push_back(new ItemStack(0, 0));
 	}

@@ -61,6 +61,7 @@ public:
 	void SetTileAt(int x,int y, Tile* tile);
 	void DigTileAt(int x, int y);
 
+	int GetItemFromTile(int x, int y);
 	int GetX();
 	int GetY();
 	int GetBiome();

@@ -24,5 +24,5 @@ private:
 	static int checkSides(int x, int y, Chunk* chunkPtr);
 	static void Smooth(int less, int bigg, World* world);
 	static void GenerateTileAt(int i, int j, Chunk* chunkPtr);
-	static const int seed = 31;
+	static const int seed = 123;
 };

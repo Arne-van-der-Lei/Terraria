@@ -18,8 +18,8 @@ public:
 
 	virtual void Paint(int x,int y);
 
-	ItemStack* Add(ItemStack* itemStack);
-	ItemStack* Devide(ItemStack* itemStack);
+	bool Add(ItemStack* itemStack);
+	bool Devide(ItemStack* itemStack);
 	void SetAmount(int amount);
 	int GetAmount();
 	int GetId();

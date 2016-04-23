@@ -130,7 +130,7 @@ void Chunk::PaintTileAt(Tile* tilePtr) {
 }
 
 void Chunk::PaintBackgroundAt(Tile* tilePtr) {
-	if (tilePtr->backTileType == BackgroundType::BAIR)return;
+	if (tilePtr->backTileType == BackgroundType::BAIR) return;
 	Bitmap* bitmapWallPtr = FILE_MANAGER->GetWallBitmap(tilePtr->backTileType);
 
 	MATRIX3X2 matTrans, matScale, matWorldWall, matOffset;
@@ -225,4 +225,19 @@ void Chunk::SetTileAt(int x, int y, Tile* tile) {
 
 int Chunk::GetBiome() {
 	return m_biome;
+}
+
+
+int Chunk::GetItemFromTile(int x,int y) {
+	switch (GetTileAt(x,y)->type) {
+	case Type::DIRT:
+	case Type::GRASS:
+		return 2;
+		break;
+	case Type::COBBLE:
+		return 3;
+		break;
+	default:
+		return 0;
+	}
 }
