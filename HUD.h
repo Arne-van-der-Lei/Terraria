@@ -23,6 +23,7 @@ public:
 	void AddItem(ItemStack* itemPtr);
 	bool IsOpen();
 	ItemStack* GetSelectedItem();
+	std::string ToString();
 private: 
 
 	Inventory* m_CurrentInvPtr;

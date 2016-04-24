@@ -56,14 +56,17 @@ void Terraria::GameStart()
 	GAME_ENGINE->SetBitmapInterpolationModeNearestNeighbor();
 	m_AvatarPtr = new Avatar({ 16 * 32 * 10, 16 * 32 * 4-32 }, { 48,84 });
 	m_CameraPtr = new Camera();
-	m_WorldPtr = new World();
+	m_WorldPtr = new World(false);
 	m_NPCArrPtr.push_back(new Zombie({ 9 * 32 * 16,0 }, {58,90}));
 	m_HUD = new HUD();
-
+	FILE_MANAGER->LoadWorld(m_WorldPtr);
 }
 
 void Terraria::GameEnd()
 {
+
+	FILE_MANAGER->SaveWorld(m_WorldPtr);
+
 	FileManager::GetSingleton()->RemoveAllTextures();
 
 	delete m_AvatarPtr;
@@ -88,8 +91,13 @@ void Terraria::GameTick(double deltaTime)
 {
 	m_deltatime = deltaTime;
 
+
 	if (GAME_ENGINE->IsKeyboardKeyPressed(VK_ESCAPE)) {
 		m_HUD->ToggleInventory();
+	}
+
+	if (GAME_ENGINE->IsKeyboardKeyPressed('X')) {
+		GAME_ENGINE->QuitGame();
 	}
 
 	if (!m_HUD->IsOpen()) {
@@ -101,10 +109,19 @@ void Terraria::GameTick(double deltaTime)
 			DOUBLE2 chunkPos = worldMousePos / (double)(Chunk::TILESIZE*Chunk::SIZE);
 
 			Chunk* chunkPtr = m_WorldPtr->GetChunkAt(chunkPos);
-			int x = worldMousePos.x / Chunk::TILESIZE - (int)chunkPos.x * Chunk::SIZE, y = worldMousePos.y / Chunk::TILESIZE - (int)chunkPos.y * Chunk::SIZE;
-			if (chunkPtr->GetTileAt(x, y)->type != Chunk::AIR && abs((worldMousePos - m_AvatarPtr->GetPosition() ).Length()) < Chunk::TILESIZE * 6 && m_HUD->GetSelectedItem()->GetId() == 1) {
-				m_HUD->AddItem(new ItemStack(chunkPtr->GetItemFromTile(x, y)));
-				chunkPtr->DigTileAt(x, y);
+			int x = worldMousePos.x / Chunk::TILESIZE - (int)chunkPos.x * Chunk::SIZE, 
+				y = worldMousePos.y / Chunk::TILESIZE - (int)chunkPos.y * Chunk::SIZE;
+			if (abs((worldMousePos - m_AvatarPtr->GetPosition() ).Length()) < Chunk::TILESIZE * 4 ){
+				if (m_HUD->GetSelectedItem()->GetId() == 1 && chunkPtr->GetTileAt(x, y)->type != Chunk::AIR) {
+					m_HUD->AddItem(new ItemStack(chunkPtr->GetItemFromTile(x, y)));
+					chunkPtr->DigTileAt(x, y);
+				}
+
+				if (m_HUD->GetSelectedItem()->GetId() != 1 && chunkPtr->GetTileAt(x,y)->type == Chunk::AIR) {
+
+					m_HUD->GetSelectedItem()->SetAmount(m_HUD->GetSelectedItem()->GetAmount() - 1);
+					chunkPtr->PlaceTileAt(x, y, m_HUD->GetSelectedItem()->GetPlaceId());
+				}
 			}
 		}
 

@@ -36,7 +36,7 @@ void HUD::Paint(Avatar* avatarPtr) {
 	}
 
 
-	FILE_MANAGER->DrawString(String("Life: ") + String(avatarPtr->GetHealth()) + String("/") + String(avatarPtr->GetMaxHealth()), { GAME_ENGINE->GetWidth() - 450, 20 });
+	FILE_MANAGER->DrawString(String("Life: ") + String(avatarPtr->GetHealth()) + String("/") + String(avatarPtr->GetMaxHealth()), { (double)GAME_ENGINE->GetWidth() - 450, (double)20 });
 	Bitmap* bitmapPtr = FILE_MANAGER->GetHUDBitmap(16);
 	for (int i = 0; i < avatarPtr->GetHealth() / 20; i++) {
 		GAME_ENGINE->DrawBitmap(bitmapPtr, GAME_ENGINE->GetWidth() - 400 + i* bitmapPtr->GetWidth() + i*10, 50);
@@ -66,4 +66,8 @@ void HUD::Tick(double deltaTime) {
 			dynamic_cast<AvatarInv*>(m_CurrentInvPtr)->SetSelected(i-1);
 		}
 	}
+}
+
+std::string HUD::ToString() {
+	return "<hud>\n";
 }

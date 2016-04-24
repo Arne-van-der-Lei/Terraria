@@ -14,7 +14,7 @@
 #define GAME_ENGINE (GameEngine::GetSingleton())
 #define FILE_MANAGER (FileManager::GetSingleton())
 
-World::World()
+World::World(bool Generate)
 {
 
 	m_Bg = new Background(Background::Types::LOWMOUNTENS, 0);
@@ -24,11 +24,12 @@ World::World()
 			m_ChunkArrPtr.push_back(new Chunk(i,j,this));
 		}
 	}
+	if (Generate) {
+		Generation::GenerateChunks(this);
 
-	Generation::GenerateChunks(this);
-	
-	for (Chunk* chunkPtr : m_ChunkArrPtr) {
-		chunkPtr->AfterInit();
+		for (Chunk* chunkPtr : m_ChunkArrPtr) {
+			chunkPtr->AfterInit();
+		}
 	}
 }
 

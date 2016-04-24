@@ -4,7 +4,11 @@
 // Name: van der Lei Arne
 // Group: 1DAE16
 //-----------------------------------------------------------------
-
+class World;
+class Chunk;
+class Avatar;
+class HUD;
+struct Tile;
 class FileManager 
 {
 public:
@@ -21,10 +25,24 @@ public:
 
 	void DrawString(String str, DOUBLE2 pos);
 
+	void LoadWorld(World* worldPtr);
+	void LoadAvatar(Avatar* avatar, HUD* hud);
+
+	void SaveWorld(World* worldPtr);
+	void SaveAvatar(Avatar* avatar, HUD* hud);
+
 	static FileManager* GetSingleton();
 
 private: 
 	FileManager();
+
+	void LoadChunk(Chunk* chunkPtr, std::string str);
+	void LoadTile(Tile* tilePtr, std::string str);
+
+	std::string SaveChunk(Chunk* worldPtr);
+	std::string SaveTile(Tile* tilePtr);
+
+	int GetIntFromString(std::string strSource, std::string value);
 
 	static FileManager* m_FileManagerPtr;
 

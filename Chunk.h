@@ -58,8 +58,8 @@ public:
 	Tile* GetTileAt(int x, int y);
 	void RemoveTileAt(int x, int y);
 	void AfterInit();
-	void SetTileAt(int x,int y, Tile* tile);
 	void DigTileAt(int x, int y);
+	void PlaceTileAt(int x, int y, int type);
 
 	int GetItemFromTile(int x, int y);
 	int GetX();

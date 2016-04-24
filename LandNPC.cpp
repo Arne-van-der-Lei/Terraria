@@ -101,3 +101,12 @@ bool LandNPC::CheckForUpHill(int x, int y, Chunk* chunkPtr) {
 int LandNPC::GetHealth() {
 	return m_Health;
 }
+
+int LandNPC::GetMaxHealth() {
+	return m_MaxHealth;
+}
+
+std::string LandNPC::ToString() {
+	return NPC::ToString() + "<health>" + std::to_string(m_Health) + "</health>\n"
+		+ "<maxhealth>" + std::to_string(m_MaxHealth) + "</maxHealth>\n";
+}

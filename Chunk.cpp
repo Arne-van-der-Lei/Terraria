@@ -219,12 +219,18 @@ int Chunk::GetY() {
 	return m_Y;
 }
 
-void Chunk::SetTileAt(int x, int y, Tile* tile) {
-	m_TileArrPtr[x*SIZE + y] = tile;
-}
-
 int Chunk::GetBiome() {
 	return m_biome;
+}
+
+void Chunk::PlaceTileAt(int x,int y, int type) {
+	GetTileAt(x, y)->type = type;
+	for (int i = x - 1; i <= x + 1; i++) {
+		for (int j = y - 1; j <= y + 1; j++) {
+			Tile* tilePtr = GetTileAt(i, j);
+			CheckSurroundings(tilePtr);
+		}
+	}
 }
 
 

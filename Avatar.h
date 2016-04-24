@@ -19,7 +19,7 @@ public:
 
 	virtual void Tick(double deltaTime);
 	virtual void Paint();
-
+	virtual std::string ToString();
 private:
 	enum class ActionState {
 		IDEL,

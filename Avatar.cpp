@@ -14,6 +14,7 @@
 Avatar::Avatar(DOUBLE2 pos, DOUBLE2 size): LandNPC(pos,size)
 {
 	m_Health = 100;
+	m_MaxHealth = 100;
 }
 
 Avatar::~Avatar(){}
@@ -154,4 +155,8 @@ void Avatar::ChangeFrame(double deltaTime) {
 		}
 		m_Counter -= m_FrameTime;
 	}
+}
+
+std::string Avatar::ToString() {
+	return "<avartar>\n" + LandNPC::ToString() + "</avatar>\n";
 }

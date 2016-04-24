@@ -8,7 +8,7 @@ class Avatar;
 class World;
 class ItemStack {
 public:
-	ItemStack(int id); 
+	ItemStack(int id);
 	ItemStack(int id,int amount);
 	virtual ~ItemStack( );
 	// Make objects non-copyable
@@ -23,6 +23,7 @@ public:
 	void SetAmount(int amount);
 	int GetAmount();
 	int GetId();
+	int GetPlaceId();
 private: 
 	int m_id;
 	int m_Amount;

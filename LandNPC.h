@@ -23,6 +23,7 @@ public:
 	virtual bool afterMathUpHill(int x, int y, Chunk* chunkPtr, bool result) { return result; };
 	virtual int GetHealth();
 	virtual int GetMaxHealth();
+	virtual std::string ToString();
 protected:
 	bool CheckForUpHill(int x, int y, Chunk* chunkPtr);
 	bool m_isOnGround;
