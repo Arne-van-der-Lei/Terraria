@@ -30,7 +30,7 @@ void ItemEntity::Tick(double deltaTime, Avatar* avatar, World* worldPtr) {
 }
 
 void ItemEntity::Paint() {
-	std::cout << "cookies: " << m_Id << " pos: " << m_pos.x << " , " << m_pos.y << std::endl;
+	//std::cout << "cookies: " << m_Id << " pos: " << m_pos.x << " , " << m_pos.y << std::endl;
 	Bitmap * bitmapPtr = FILE_MANAGER->GetItemBitmap(m_Id);
 	MATRIX3X2 matWorld, matTrans, matScale, matOffset;
 	matTrans.SetAsTranslate(m_pos.x, m_pos.y);

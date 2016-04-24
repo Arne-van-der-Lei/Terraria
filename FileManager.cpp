@@ -33,6 +33,10 @@ void FileManager::GetAllTextures() {
 	}
 	m_BmpHUDArrPtr.push_back(new Bitmap(String("./Resources/Inventory_Back.png")));
 	m_BmpHUDArrPtr.push_back(new Bitmap(String("./Resources/font.png")));
+	for (int i = 2; i < 16; i++) {
+		m_BmpHUDArrPtr.push_back(new Bitmap(String("./Resources/Images/Inventory_Back") + String(i) + String(".png")));
+	}
+	m_BmpHUDArrPtr.push_back(new Bitmap(String("./Resources/Images/Heart.png")));
 	m_BmpHUDArrPtr.at(1)->SetTransparencyColor(COLOR(100, 149, 237));
 	m_BmpItemArrPtr.push_back(new Bitmap(String("./Resources/Item_1.png")));
 	m_BmpItemArrPtr.push_back(new Bitmap(String("./Resources/Item_2.png")));
@@ -128,6 +132,6 @@ void FileManager::DrawString(String str,DOUBLE2 pos) {
 		rect.right = (str.At(i) - 48 + 1) * 12;
 		rect.top = 0;
 		rect.bottom = 40;
-		GAME_ENGINE->DrawBitmap(m_BmpHUDArrPtr.at(1),pos.x + i*6,pos.y,rect);
+		GAME_ENGINE->DrawBitmap(m_BmpHUDArrPtr.at(1),pos.x + i*8,pos.y,rect);
 	}
 }

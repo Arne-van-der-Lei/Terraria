@@ -18,7 +18,12 @@ public:
 	AvatarInv& operator=( const AvatarInv& ) = delete;
 
 	virtual void Paint(bool open, int x, int y);
+	virtual bool AddItemToInventory(ItemStack* itemStackPtr);
+	virtual ItemStack* GetSelectedItem();
+	virtual void SetSelected(int value);
+
 private: 
 
 	std::vector<ItemStack*> m_hotbar;
+	int m_selected = 0;
 };

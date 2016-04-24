@@ -22,12 +22,15 @@ ItemStack::~ItemStack(){
 }
 
 void ItemStack::Paint(int x,int y) {
-	GAME_ENGINE->DrawBitmap(FILE_MANAGER->GetItemBitmap(m_id),x+10,y+10);
-	FILE_MANAGER->DrawString(String(m_Amount), { (double)x, (double)y });
+	Bitmap * bitmapPtr = FILE_MANAGER->GetItemBitmap(m_id);
+	GAME_ENGINE->DrawBitmap(bitmapPtr,x + 25 - bitmapPtr->GetWidth()/2 ,y + 25 - bitmapPtr->GetHeight() / 2 );
+	if (m_Amount > 1) {
+		FILE_MANAGER->DrawString(String(m_Amount), { (double)x + 10, (double)y + 20 });
+	}
 }
 
 bool ItemStack::Add(ItemStack* itemStack) {
-	if (itemStack->GetId() == m_id || m_id == 0) {
+	if (itemStack->GetId() == m_id || m_id == 0 && m_Amount < MAXSTACKSIZE-1) {
 		m_id = itemStack->GetId();
 		if (m_Amount + itemStack->GetAmount() >= MAXSTACKSIZE ) {
 			m_Amount = MAXSTACKSIZE - 1;
@@ -35,8 +38,8 @@ bool ItemStack::Add(ItemStack* itemStack) {
 		} else {
 			m_Amount += itemStack->GetAmount();
 			itemStack->SetAmount(0);
+			return true;
 		}
-		return true;
 	}
 	return false;
 }

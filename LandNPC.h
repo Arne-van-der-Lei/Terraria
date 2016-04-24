@@ -21,7 +21,12 @@ public:
 	virtual void Paint() {};
 	virtual void DoCollision(World* world, double deltaTime);
 	virtual bool afterMathUpHill(int x, int y, Chunk* chunkPtr, bool result) { return result; };
+	virtual int GetHealth();
+	virtual int GetMaxHealth();
 protected:
 	bool CheckForUpHill(int x, int y, Chunk* chunkPtr);
 	bool m_isOnGround;
+
+	int m_Health;
+	int m_MaxHealth;
 };

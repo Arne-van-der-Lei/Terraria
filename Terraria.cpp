@@ -88,45 +88,50 @@ void Terraria::GameTick(double deltaTime)
 {
 	m_deltatime = deltaTime;
 
-	if (GAME_ENGINE->IsMouseButtonPressed(VK_LBUTTON)) {
-		DOUBLE2 mousePos = GAME_ENGINE->GetMousePosition();
-
-		DOUBLE2 worldMousePos = m_CameraPtr->GetViewMatrix(m_AvatarPtr).Inverse().TransformPoint(mousePos);
-
-		DOUBLE2 chunkPos = worldMousePos / (double)(Chunk::TILESIZE*Chunk::SIZE);
-
-		Chunk* chunkPtr = m_WorldPtr->GetChunkAt(chunkPos);
-		int x = worldMousePos.x / Chunk::TILESIZE - (int)chunkPos.x * Chunk::SIZE, y = worldMousePos.y / Chunk::TILESIZE - (int)chunkPos.y * Chunk::SIZE;
-		if (chunkPtr->GetTileAt(x, y)->type != Chunk::AIR) {
-			m_NPCArrPtr.push_back(new ItemEntity(m_AvatarPtr->GetPosition(), { 20, 20 }, chunkPtr->GetItemFromTile(x, y)));
-			chunkPtr->DigTileAt(x, y);
-		}
-	}
-
 	if (GAME_ENGINE->IsKeyboardKeyPressed(VK_ESCAPE)) {
 		m_HUD->ToggleInventory();
 	}
 
-	m_AvatarPtr->Tick(deltaTime);
-	m_AvatarPtr->DoCollision(m_WorldPtr, deltaTime);
-	for (NPC* NPCPtr : m_NPCArrPtr) {
-		if (dynamic_cast<Hostile *>(NPCPtr)) {
-			dynamic_cast<Hostile *>(NPCPtr)->Tick(deltaTime, m_AvatarPtr,m_WorldPtr);
-		}
-		NPCPtr->DoCollision(m_WorldPtr,deltaTime);
-	}
+	if (!m_HUD->IsOpen()) {
+		if (GAME_ENGINE->IsMouseButtonDown(VK_LBUTTON)) {
+			DOUBLE2 mousePos = GAME_ENGINE->GetMousePosition();
 
-	for (int i = 0; i < m_NPCArrPtr.size(); i++) {
-		if (m_NPCArrPtr.at(i)->ColidesWith(m_AvatarPtr)) {
-			if (dynamic_cast<ItemEntity*>(m_NPCArrPtr.at(i))) {
-				ItemEntity* ItemEntityPtr = dynamic_cast<ItemEntity*>(m_NPCArrPtr.at(i));
-				m_HUD->AddItem(new ItemStack(ItemEntityPtr->GetId()));
-				m_NPCArrPtr.erase(m_NPCArrPtr.begin() + i);
+			DOUBLE2 worldMousePos = m_CameraPtr->GetViewMatrix(m_AvatarPtr).Inverse().TransformPoint(mousePos);
+
+			DOUBLE2 chunkPos = worldMousePos / (double)(Chunk::TILESIZE*Chunk::SIZE);
+
+			Chunk* chunkPtr = m_WorldPtr->GetChunkAt(chunkPos);
+			int x = worldMousePos.x / Chunk::TILESIZE - (int)chunkPos.x * Chunk::SIZE, y = worldMousePos.y / Chunk::TILESIZE - (int)chunkPos.y * Chunk::SIZE;
+			if (chunkPtr->GetTileAt(x, y)->type != Chunk::AIR && abs((worldMousePos - m_AvatarPtr->GetPosition() ).Length()) < Chunk::TILESIZE * 6 && m_HUD->GetSelectedItem()->GetId() == 1) {
+				m_HUD->AddItem(new ItemStack(chunkPtr->GetItemFromTile(x, y)));
+				chunkPtr->DigTileAt(x, y);
 			}
 		}
-	}
 
-	m_WorldPtr->Tick(deltaTime,m_AvatarPtr);
+		m_AvatarPtr->Tick(deltaTime);
+		m_AvatarPtr->DoCollision(m_WorldPtr, deltaTime);
+
+		for (NPC* NPCPtr : m_NPCArrPtr) {
+			if (dynamic_cast<Hostile *>(NPCPtr)) {
+				dynamic_cast<Hostile *>(NPCPtr)->Tick(deltaTime, m_AvatarPtr, m_WorldPtr);
+			}
+			NPCPtr->DoCollision(m_WorldPtr, deltaTime);
+		}
+
+		for (int i = 0; i < m_NPCArrPtr.size(); i++) {
+			if (m_NPCArrPtr.at(i)->ColidesWith(m_AvatarPtr)) {
+				if (dynamic_cast<ItemEntity*>(m_NPCArrPtr.at(i))) {
+					ItemEntity* ItemEntityPtr = dynamic_cast<ItemEntity*>(m_NPCArrPtr.at(i));
+					m_HUD->AddItem(new ItemStack(ItemEntityPtr->GetId()));
+					m_NPCArrPtr.erase(m_NPCArrPtr.begin() + i);
+				}
+			}
+		}
+
+		m_WorldPtr->Tick(deltaTime, m_AvatarPtr);
+
+		m_HUD->Tick(deltaTime);
+	}
 }
 
 void Terraria::GamePaint()
@@ -152,7 +157,7 @@ void Terraria::GamePaint()
 
 	GAME_ENGINE->SetViewMatrix(MATRIX3X2::CreateIdentityMatrix());
 
-	m_HUD->Paint();
+	m_HUD->Paint(m_AvatarPtr);
 
 	GAME_ENGINE->DrawString(String(floor(m_AvatarPtr->GetPosition().x / (double)(Chunk::TILESIZE*Chunk::SIZE))), 0, 0);
 	GAME_ENGINE->DrawString(String(floor(m_AvatarPtr->GetPosition().y / (double)(Chunk::TILESIZE*Chunk::SIZE))), 0, 12);

@@ -97,3 +97,7 @@ bool LandNPC::CheckForUpHill(int x, int y, Chunk* chunkPtr) {
 
 	return afterMathUpHill(x, y, chunkPtr, check);
 }
+
+int LandNPC::GetHealth() {
+	return m_Health;
+}

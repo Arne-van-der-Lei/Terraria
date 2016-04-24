@@ -28,7 +28,7 @@ DOUBLE2 NPC::GetChunkPos() {
 bool NPC::ColidesWith(NPC* NPCPtr) {
 	if (m_pos.x < NPCPtr->m_pos.x + NPCPtr->m_size.x && m_pos.x + m_size.x > NPCPtr->m_pos.x &&
 		m_pos.y < NPCPtr->m_pos.y + NPCPtr->m_size.y && m_pos.y + m_size.y > NPCPtr->m_pos.y) {
-		std::cout << "hello" << std::endl;
+		//std::cout << "hello" << std::endl;
 		return true;
 	}
 	return false;

@@ -17,9 +17,12 @@ public:
 	HUD( const HUD& ) = delete;
 	HUD& operator=( const HUD& ) = delete;
 
-	virtual void Paint();
+	void Tick(double deltaTime);
+	void Paint(Avatar* avatarPtr);
 	void ToggleInventory();
 	void AddItem(ItemStack* itemPtr);
+	bool IsOpen();
+	ItemStack* GetSelectedItem();
 private: 
 
 	Inventory* m_CurrentInvPtr;

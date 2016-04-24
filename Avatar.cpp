@@ -11,7 +11,10 @@
 #define GAME_ENGINE (GameEngine::GetSingleton())
 #define FILE_MANAGER (FileManager::GetSingleton())
 
-Avatar::Avatar(DOUBLE2 pos, DOUBLE2 size): LandNPC(pos,size){}
+Avatar::Avatar(DOUBLE2 pos, DOUBLE2 size): LandNPC(pos,size)
+{
+	m_Health = 100;
+}
 
 Avatar::~Avatar(){}
 
