@@ -37,8 +37,8 @@ bool NPC::ColidesWith(NPC* NPCPtr) {
 std::string NPC::ToString() {
 	return "<motion>" + std::string(m_motion.ToString().C_str()) + "</motion>\n"
 		+ "<pos>" + std::string(m_pos.ToString().C_str()) + "</pos>\n"
-		+ "<size>" + std::string(m_pos.ToString().C_str()) + "<size>\n"
-		+ "<speed>" + std::string(m_pos.ToString().C_str()) + "<speed>\n";
+		+ "<size>" + std::string(m_pos.ToString().C_str()) + "</size>\n"
+		+ "<speed>" + std::string(m_pos.ToString().C_str()) + "</speed>\n";
 }
 
 void NPC::LoadFromString(std::string str) {
