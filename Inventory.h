@@ -16,7 +16,9 @@ public:
 
 	virtual void Paint(bool open,int x,int y);
 	virtual bool AddItemToInventory(ItemStack* itemStackPtr);
- 
+	virtual std::string ToString();
+	virtual void LoadFromString(std::string str);
+protected:
 	int m_Width;
 	int m_Height;
 	std::vector<ItemStack*> m_contents;

@@ -33,6 +33,9 @@ public:
 
 	static FileManager* GetSingleton();
 
+	int GetIntFromString(std::string strSource, std::string value); 
+	std::string GetStringFromString(std::string strSource, std::string value);
+	DOUBLE2 GetDouble2FromString(std::string strSource, std::string value);
 private: 
 	FileManager();
 
@@ -42,7 +45,6 @@ private:
 	std::string SaveChunk(Chunk* worldPtr);
 	std::string SaveTile(Tile* tilePtr);
 
-	int GetIntFromString(std::string strSource, std::string value);
 
 	static FileManager* m_FileManagerPtr;
 

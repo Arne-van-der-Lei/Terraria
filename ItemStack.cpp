@@ -56,6 +56,10 @@ void ItemStack::SetAmount(int amount) {
 	m_Amount = amount;
 }
 
+void ItemStack::SetId(int id) {
+	m_id = id;
+}
+
 int ItemStack::GetPlaceId() {
 	return m_id - 1;
 }

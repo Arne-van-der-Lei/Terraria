@@ -47,3 +47,32 @@ bool Inventory::AddItemToInventory(ItemStack* itemStackPtr) {
 	}
 	return false;
 }
+
+std::string Inventory::ToString() {
+	std::string str;
+	str += "<contents>\n";
+
+	for (ItemStack* item : m_contents) {
+		str += std::string("<item>\n")
+			+ "<id>" + std::to_string(item->GetId()) + "</id>\n"
+			+ "<amount>" + std::to_string(item->GetAmount()) + "</amount>\n"
+			+ "</item>\n";
+	}
+	str += "<contents>\n";
+	return str;
+}
+
+void Inventory::LoadFromString(std::string str) {
+	int begin = str.find("<contents>");
+	int end = str.find("</contents>");
+	str = str.substr(begin, end - begin);
+	int teller = 0;
+	begin = str.find("<item>");
+	do {
+		std::string data = str.substr(begin, str.find("</item>",begin+1) - begin);
+		m_contents.at(teller)->SetId(FILE_MANAGER->GetIntFromString(data, "id"));
+		m_contents.at(teller)->SetAmount(FILE_MANAGER->GetIntFromString(data, "amount"));
+		teller++;
+		begin = str.find("<item>", begin + 1);
+	} while (begin != -1);
+}

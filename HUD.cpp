@@ -16,9 +16,6 @@
 HUD::HUD(){
 	m_CurrentInvPtr = new AvatarInv();
 	m_Open = false;
-
-	m_CurrentInvPtr->AddItemToInventory(new ItemStack(1,1));
-	m_CurrentInvPtr->AddItemToInventory(new ItemStack(3,64));
 }
 
 HUD::~HUD(){
@@ -69,5 +66,11 @@ void HUD::Tick(double deltaTime) {
 }
 
 std::string HUD::ToString() {
-	return "<hud>\n";
+	return "<hud>\n" + m_CurrentInvPtr->ToString() + "</hud>\n";
+}
+
+void HUD::LoadFromString(std::string str) {
+	int begin = str.find("<avatarInventory>");
+	int end = str.find("</avatarInventory>");
+	m_CurrentInvPtr->LoadFromString(str.substr(begin,end-begin));
 }

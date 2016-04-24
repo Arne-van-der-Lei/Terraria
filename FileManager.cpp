@@ -182,8 +182,23 @@ void FileManager::LoadTile(Tile* tile,std::string str) {
 	tile->noBackround = GetIntFromString(str, "backgroundair");
 }
 
-void FileManager::LoadAvatar(Avatar* avatar, HUD* hud) {
-	
+void FileManager::LoadAvatar(Avatar* avatarPtr, HUD* hudPtr) {
+	std::ifstream file("./Resources/Saves/avatar.save");
+	std::string data;
+	std::string line;
+	std::stringstream strStream;
+	while (std::getline(file, line)) {
+		strStream << line;
+	}
+	data = strStream.str();
+
+	int begin = data.find("<avatar>");
+	int end = data.find("</avatar>");
+	avatarPtr->LoadFromString(data.substr(begin, end - begin));
+
+	begin = data.find("<hud>");
+	end = data.find("</hud>");
+	hudPtr->LoadFromString(data.substr(begin,end-begin));
 }
 
 void FileManager::SaveWorld(World* worldPtr) {
@@ -244,4 +259,19 @@ int FileManager::GetIntFromString(std::string strSource,std::string value ) {
 	int begin = strSource.find("<" + value + ">") + value.length() + 2;
 	int end = strSource.find("</" + value + ">") - begin;
 	return std::stoi(strSource.substr(begin,end ));
+}
+
+std::string FileManager::GetStringFromString(std::string strSource, std::string value) {
+	int begin = strSource.find("<" + value + ">") + value.length() + 2;
+	int end = strSource.find("</" + value + ">") - begin;
+	return strSource.substr(begin, end);
+}
+
+DOUBLE2 FileManager::GetDouble2FromString(std::string strSource, std::string value) {
+	int begin = strSource.find("<" + value + ">") + value.length() + 2;
+	int end = strSource.find("</" + value + ">") - begin;
+	std::string double2 = strSource.substr(begin, end);
+	double x = std::stod(double2.substr(double2.find("["), double2.find(",")- double2.find("[")));
+	double y = std::stod(double2.substr(double2.find(","), double2.find("]") - double2.find(",")));
+	return DOUBLE2(x, y);
 }

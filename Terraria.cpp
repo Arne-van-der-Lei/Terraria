@@ -60,14 +60,15 @@ void Terraria::GameStart()
 	m_NPCArrPtr.push_back(new Zombie({ 9 * 32 * 16,0 }, {58,90}));
 	m_HUD = new HUD();
 	FILE_MANAGER->LoadWorld(m_WorldPtr);
+	FILE_MANAGER->LoadAvatar(m_AvatarPtr, m_HUD);
 }
 
 void Terraria::GameEnd()
 {
 
 	FILE_MANAGER->SaveWorld(m_WorldPtr);
-
-	FileManager::GetSingleton()->RemoveAllTextures();
+	FILE_MANAGER->SaveAvatar(m_AvatarPtr,m_HUD);
+	FILE_MANAGER->RemoveAllTextures();
 
 	delete m_AvatarPtr;
 	m_AvatarPtr = nullptr;

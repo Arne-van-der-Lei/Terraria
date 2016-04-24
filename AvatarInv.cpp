@@ -59,3 +59,41 @@ ItemStack* AvatarInv::GetSelectedItem() {
 void AvatarInv::SetSelected(int value) {
 	m_selected = value;
 }
+
+std::string AvatarInv::ToString() {
+	std::string str;
+	str += "<avatarInventory>\n";
+
+	str += "<hotbar>\n";
+	for (ItemStack* item: m_hotbar) {
+		str += std::string("<item>\n")
+			+ "<id>" + std::to_string(item->GetId()) + "</id>\n"
+			+ "<amount>" + std::to_string(item->GetAmount()) + "<amount>\n"
+			+ "</item>\n";
+	}
+	str += "</hotbar>\n";
+
+	str += Inventory::ToString();
+	str += "</avatarinventory>\n";
+	return str;
+}
+
+void AvatarInv::LoadFromString(std::string str) {
+	int begin = str.find("<hotbar>");
+	int end = str.find("</hotbar>");
+	std::string cont = str.substr(begin, end - begin);
+	int teller = 0;
+	begin = cont.find("<item>");
+	do {
+		std::string data = cont.substr(begin, cont.find("</item>", begin + 1) - begin);
+		std::cout << data << "\n";
+		m_hotbar.at(teller)->SetId(FILE_MANAGER->GetIntFromString(data, "id"));
+		m_hotbar.at(teller)->SetAmount(FILE_MANAGER->GetIntFromString(data, "amount"));
+		teller++;
+		begin = cont.find("<item>", begin + 1);
+	} while (begin != -1);
+
+	begin = str.find("</hotbar>");
+
+	Inventory::LoadFromString(str.substr(begin));
+}

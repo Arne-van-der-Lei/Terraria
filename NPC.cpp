@@ -40,3 +40,7 @@ std::string NPC::ToString() {
 		+ "<size>" + std::string(m_pos.ToString().C_str()) + "<size>\n"
 		+ "<speed>" + std::string(m_pos.ToString().C_str()) + "<speed>\n";
 }
+
+void NPC::LoadFromString(std::string str) {
+
+}

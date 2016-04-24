@@ -20,10 +20,12 @@ public:
 
 	bool Add(ItemStack* itemStack);
 	bool Devide(ItemStack* itemStack);
-	void SetAmount(int amount);
 	int GetAmount();
 	int GetId();
 	int GetPlaceId();
+
+	void SetId(int id);
+	void SetAmount(int amount);
 private: 
 	int m_id;
 	int m_Amount;

@@ -158,5 +158,5 @@ void Avatar::ChangeFrame(double deltaTime) {
 }
 
 std::string Avatar::ToString() {
-	return "<avartar>\n" + LandNPC::ToString() + "</avatar>\n";
+	return "<avatar>\n" + LandNPC::ToString() + "</avatar>\n";
 }

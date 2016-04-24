@@ -21,6 +21,7 @@ public:
 	virtual void DoCollision(World* world, double deltaTime) = 0;
 	bool ColidesWith(NPC* NPCPtr);
 	virtual std::string ToString();
+	virtual void LoadFromString(std::string str);
 
 	DOUBLE2 GetPosition();
 	DOUBLE2 GetBlockPos();

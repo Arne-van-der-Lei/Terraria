@@ -24,6 +24,7 @@ public:
 	bool IsOpen();
 	ItemStack* GetSelectedItem();
 	std::string ToString();
+	void LoadFromString(std::string str);
 private: 
 
 	Inventory* m_CurrentInvPtr;

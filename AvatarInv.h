@@ -21,7 +21,8 @@ public:
 	virtual bool AddItemToInventory(ItemStack* itemStackPtr);
 	virtual ItemStack* GetSelectedItem();
 	virtual void SetSelected(int value);
-
+	virtual std::string ToString();
+	virtual void LoadFromString(std::string str);
 private: 
 
 	std::vector<ItemStack*> m_hotbar;
